@@ -15,7 +15,7 @@ const SingleProduct = ({ product }: any) => {
   const dispatch = useDispatch();
 
   const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${product.title}*.
-Here is the link: ${process.env.NEXTAUTH_URL}/product/${product.id}`)}`;
+Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}`;
 
   const { userInfo }: any = useSelector(
     (state: StateProps) => state.shopping
