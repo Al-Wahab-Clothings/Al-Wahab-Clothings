@@ -8,9 +8,11 @@ export interface Product {
     price: number;
     description: string;
     category: string;
+    brand: string;
     image: IImage;
     rating: number;
     quantity: number;
+    isTrending: boolean;
   }
   
   export interface ItemProps {
