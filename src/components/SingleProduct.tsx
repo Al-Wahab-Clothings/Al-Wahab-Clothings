@@ -67,12 +67,15 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}
           </p>
         </div>
         <p className="text-darkText opacity-80">{product?.description}</p>
-        <div className="text-sm text-darkText opacity-80 flex flex-col">
+        <div className="text-sm text-darkText flex flex-col">
           <span>
             SKU: <span className="text-darkText">{product?.id}</span>
           </span>
           <span>
             Category: <span className="text-darkText">{product?.category.name}</span>
+          </span>
+          <span>
+            Brand: <span className="text-darkText">{product?.brand.name}</span>
           </span>
         </div>
         <div className="flex sm:flex-row items-center sm:justify-between justify-items-center flex-col">

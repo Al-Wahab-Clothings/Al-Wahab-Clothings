@@ -51,6 +51,17 @@ export const product = defineType({
                     },
                 ]
             }),
+        defineField(
+            {
+                name: "brand",
+                type: "reference",
+                title: "Product Brand",
+                to: [
+                    {
+                        type: "brand"
+                    },
+                ]
+            }),
         {
             name: "rating",
             type: "number",
@@ -60,6 +71,11 @@ export const product = defineType({
             name: "quantity",
             type: "number",
             title: "Quantity",
+        },
+        {
+            name: "isTrending",
+            type: "boolean",
+            title: "Is Trending",
         },
     ]
 })

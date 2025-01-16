@@ -1,7 +1,31 @@
 # AL WAHAB CLOTHINGS - An Ecommerce Store
-## Libraries and Tools
 
-# 1. Frontend
+# Pages / Routes 
+
+### 1. **Home: (/)**
+The landing page that showcases featured products.
+
+### 2. **product: (/product/[1])**
+Displays detailed information about a specific product when selected.
+
+### 3. **Cart: (/cart)**
+View and manage the products added to your shopping cart.
+
+### 4. **Order: (/order)**
+Check the details of your previous or ongoing orders.
+
+### 5. **Success: (/Success)**
+Confirmation page displayed after a successful purchase.
+
+### 6. **Not-found: (/something-else)**
+Appears when you attempt to access a page that does not exist.
+
+### 7. **Studio: (/studio)**
+Admin interface for adding, updating, or managing product data.
+
+# Libraries and Tools
+
+## 1. Frontend
 
 * **React Icons:** Customizable icons for the UI.
 
@@ -11,19 +35,19 @@
 
 * **React Hot Toast:** Notifications and alerts.
 
-# 2. Authentication and Security
+## 2. Authentication and Security
 
 * **NextAuth:** Secure and flexible authentication.
 
-# 3. State Management
+## 3. State Management
 
 * **Redux Toolkit and Persist:** Centralized state management.
 
-# 4. E-Commerce Integration
+## 4. E-Commerce Integration
 
 * **Stripe:** Payment processing.
 
-# 5. Backend and Database
+## 5. Backend and Database
 
 * **Sanity CMS:** Content management.
 
@@ -31,12 +55,13 @@
 
 * **Vercel Postgres:** Seamless database hosting.
 
-# 6. Utilities
+## 6. Utilities
 
 * **Radix UI Slot:** Advanced slot management.
 
 * **is-hotkey:** Keyboard shortcuts handling.
 
+# Installtions
 
 ```bash
 1. npm install react-icons
@@ -62,11 +87,4 @@
 20. npm add -D pg @next/env
 21. npm install @neondatabase/serverless
 22. npm install postgres
-```
-
-```bash
-1. npm install shadcn-ui                      <!-- uninstalled -->
-2. npm i -g vercel@latest                     <!-- uninstalled -->
-3. npm install drizzle-orm --legacy-peer-deps <!-- uninstalled -->
-4. npm update drizzle-orm @vercel/postgres    <!-- uninstalled -->
 ```

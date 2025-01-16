@@ -10,16 +10,20 @@ export const getProductData = async () => {
         category -> {
           name
         },
+        brand -> {
+          name
+        },
         description,
         isNew,
         rating,
-        quantity 
+        quantity,
+        isTrending,
     }`)
   return res
 }
 
 export const getTrendingProduct = async () => {
-  const res = await client.fetch(`*[_type=="trending" ] {
+  const res = await client.fetch(`*[_type == "product" && isTrending == true] {
     id,
     title,
     oldPrice,
@@ -28,10 +32,14 @@ export const getTrendingProduct = async () => {
     category -> {
       name
     },
+    brand -> {
+      name
+    },
     description,
     isNew,
     rating,
-    quantity 
+    quantity,
+    isTrending,
 }`);
   return res
 };
@@ -52,10 +60,14 @@ export const getSingleProduct = async (_id: number) => {
     category -> {
       name
     },
+    brand -> {
+      name
+    },
     description,
     isNew,
     rating,
-    quantity 
+    quantity,
+    isTrending,
 }[0]`
   const result = await client.fetch(query, { _id });
   return result;
