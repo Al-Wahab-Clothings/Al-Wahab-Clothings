@@ -36,6 +36,7 @@ export const options: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET, // Set a secret for NextAuth.js session encryption
 
   callbacks: {
     async session({ session, token }) {

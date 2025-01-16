@@ -1,6 +1,6 @@
 import { pgTable, varchar, integer, serial } from "drizzle-orm/pg-core"
-import { drizzle } from "drizzle-orm/vercel-postgres"
-import { sql } from "@vercel/postgres"
+import { drizzle } from "drizzle-orm/neon-http"
+import { neon } from "@neondatabase/serverless";
 
 export const cartTable = pgTable("cart", {
     id: serial("id").primaryKey(),
@@ -15,6 +15,8 @@ export const cartTable = pgTable("cart", {
     }).notNull(),
     quantity: integer("quantity").notNull()
 })
+
+const sql = neon(process.env.DATABASE_URL!);
 
 export const db = drizzle(sql)
 

@@ -60,6 +60,8 @@
 18. npm install @radix-ui/react-slot
 19. npm i -D drizzle-kit
 20. npm add -D pg @next/env
+21. npm install @neondatabase/serverless
+22. npm install postgres
 ```
 
 ```bash
