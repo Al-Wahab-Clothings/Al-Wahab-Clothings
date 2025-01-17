@@ -91,13 +91,13 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${item.id}`)}`;
         <div className="w-full rounded-lg overflow-hidden">
             <div>
                 <Link href={{ pathname: `/product/${item?.id}` }}>
-                    <div className="w-full h-80 group overflow-hidden relative">
+                    <div className="w-full h-72 group overflow-hidden relative">
                         {item.image && (
                             <Image
                                 src={urlForImage(item?.image).url()}
                                 alt="product image"
-                                width={500}
-                                height={500}
+                                width={1000}
+                                height={1000}
                                 className="w-full h-full object-cover group-hover:scale-110 duration-200 rounded-t-lg"
                             />)}
                         {item?.isNew && (

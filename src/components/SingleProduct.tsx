@@ -49,13 +49,13 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}
   };
 
   return (
-    <div className="grid lg:grid-cols-2 gap-5 bg-[#D6CFB4] p-4 rounded-lg">
+    <div className="grid lg:grid-cols-2 gap-10 bg-[#D6CFB4] p-4 rounded-lg">
       <div>
         <Image
           src={urlForImage(product?.image).url()}
           alt="product image"
-          width={500}
-          height={500}
+          width={1000}
+          height={1000}
           className="w-full max-h-[500px] object-cover rounded-lg"
         />
       </div>
@@ -75,7 +75,7 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}
             Category: <span className="text-darkText">{product?.category.name}</span>
           </span>
           <span>
-            Brand: <span className="text-darkText">{product?.brand.name}</span>
+            Brand: <span className="text-darkText font-bold">{product?.brand.name}</span>
           </span>
         </div>
         <div className="flex sm:flex-row items-center sm:justify-between justify-items-center flex-col">
@@ -92,7 +92,7 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}
           </div>
           <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
             <div
-              className="flex items-center cursor-pointer group mt-2 sm:mt-0"
+              className="flex sm:flex-row-reverse items-center cursor-pointer group mt-2 sm:mt-0"
             >
               <button className="bg-darkText text-slate-100 px-6 py-3 text-sm uppercase flex items-center border-r-[1px] border-r-slate-500 font-bold" >
                 WhatsApp
