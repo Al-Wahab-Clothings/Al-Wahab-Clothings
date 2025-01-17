@@ -55,7 +55,7 @@ const SuccessPage = () => {
                     Your Payment Accepted by <span className="font-logo">Al-Wahab</span>
                 </h2>
                 <p>Now you can view your Orders or continue Shopping with us</p>
-                <div className="flex items-center gap-x-5">
+                <div className="grid md:grid-cols-2 items-center gap-4">
                     <Link href={"/order"}>
                         <button className="bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full text-base font-semibold hover:bg-[#D6CFB4] duration-300 hover:text-darkText">
                             View Orders
