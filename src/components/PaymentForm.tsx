@@ -29,35 +29,6 @@ const PaymentForm = () => {
     setTotalAmt(amt);
   }, [productData]);
 
-  const handleResetCart = async () => {
-    try {
-      const res = await fetch("/api/postgres", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userInfo ? userInfo.unique_id : "Anonymous",
-        }),
-      });
-
-      if (!res.ok) {
-        const error = await res.json();
-        console.error("Error response from server:", error);
-        throw new Error(error.message || "Failed to reset cart.");
-      }
-
-      const result = await res.json();
-      console.log("Reset cart response:", result);
-
-      dispatch(resetCart());
-      toast.success("Cart reset successfully!");
-    } catch (error) {
-      console.error("Error resetting cart:", error);
-      toast.error(`An error occurred: ${(error as Error).message}`);
-    }
-  };
-
   // =============  Stripe Payment Start here ==============
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -76,10 +47,8 @@ const PaymentForm = () => {
     const data = await response.json();
 
     if (response.ok) {
-      await dispatch(saveOrder({ order: productData, id: data.id }));
+      dispatch(saveOrder({ order: productData, id: data.id }));
       stripe?.redirectToCheckout({ sessionId: data.id });
-      handleResetCart()
-      dispatch(resetCart());
     } else {
       throw new Error("Failed to create Stripe Payment");
     }
@@ -100,7 +69,7 @@ const PaymentForm = () => {
         <div className="flex items-center justify-between">
           <p>Shipping</p>
           <p>
-            <FormattedPrice amount={20} />
+            <FormattedPrice amount={200} />
           </p>
         </div>
       </div>
@@ -108,7 +77,7 @@ const PaymentForm = () => {
         <div className="flex items-center justify-between">
           <p>Total Price</p>
           <p>
-            <FormattedPrice amount={totalAmt + 20} />
+            <FormattedPrice amount={totalAmt + 200} />
           </p>
         </div>
       </div>

@@ -10,10 +10,10 @@ import {
     increaseQuantity,
 } from "@/redux/shoppingSlice";
 import FormattedPrice from "./FormattedPrice";
-import { urlForImage } from "../../sanity/lib/image";
 import { Product as IProduct } from "@/type";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { urlForImage } from "@/sanity/lib/image";
 
 const CartItem = ({ item }: any) => {
     const { productData } = useSelector((state: StateProps) => state?.shopping);

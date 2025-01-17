@@ -3,13 +3,13 @@
 import Image from "next/image";
 import FormattedPrice from "./FormattedPrice";
 import { IoMdCart } from "react-icons/io";
-import { urlForImage } from "../../sanity/lib/image";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "@/redux/shoppingSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { StateProps } from "@/type";
 import { BsWhatsapp } from "react-icons/bs";
 import Link from "next/link";
+import { urlForImage } from "@/sanity/lib/image";
 
 const SingleProduct = ({ product }: any) => {
   const dispatch = useDispatch();

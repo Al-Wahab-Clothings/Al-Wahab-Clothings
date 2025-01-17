@@ -6,13 +6,13 @@ import { calculatePercentage, getSingleProduct } from "@/helpers";
 import FormattedPrice from "./FormattedPrice";
 import { IoIosStar } from "react-icons/io";
 import Link from "next/link";
-import { urlForImage } from "../../sanity/lib/image";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, setCartData } from "@/redux/shoppingSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { BsWhatsapp } from "react-icons/bs";
+import { urlForImage } from "@/sanity/lib/image";
 
 const ProductsData = ({ item }: ItemProps) => {
     const dispatch = useDispatch();

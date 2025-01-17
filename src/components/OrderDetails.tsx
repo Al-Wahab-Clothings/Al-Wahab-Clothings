@@ -6,8 +6,8 @@ import Image from "next/image";
 import FormattedPrice from "./FormattedPrice";
 import { resetOrder } from "@/redux/shoppingSlice";
 import Link from "next/link";
-import { urlForImage } from "../../sanity/lib/image";
 import { Button } from "./ui/button";
+import { urlForImage } from "@/sanity/lib/image";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,5 @@
 "use client";
 import {
-  BsYoutube,
-  BsLinkedin,
   BsFacebook,
   BsInstagram,
   BsWhatsapp
@@ -48,35 +46,6 @@ const Footer = () => {
               </span>
             </Link>
           </div>
-        </div>
-        <div>
-          <p className="text-xl font-bold text-[#D6CFB4] underline mb-4">Projects</p>
-          <ul className="text-sm font-light mt-2 flex flex-col gap-y-2">
-            <Link href="https://ridanaz-portfolio.vercel.app/" target="_blank">
-              <li className="flex flex-col">
-                <span className="text-lg font-semibold text-slate hover:text-[#D6CFB4] cursor-pointer duration-200">
-                  Portfolio Website
-                </span>
-                <span className="text-[#D6CFB4]">February 25, 2024</span>
-              </li>
-            </Link>
-            <Link href="https://rida-portfolio-2.vercel.app/" target="_blank">
-              <li className="flex flex-col">
-                <span className="text-lg font-semibold text-slate hover:text-[#D6CFB4] cursor-pointer duration-200">
-                  Portfolio Website
-                </span>
-                <span className="text-[#D6CFB4]">April 7, 2024</span>
-              </li>
-            </Link>
-            <Link href="https://its-naz-gallery.vercel.app/" target="_blank">
-              <li className="flex flex-col">
-                <span className="text-lg font-semibold text-slate hover:text-[#D6CFB4] cursor-pointer duration-200">
-                  Gallery Website
-                </span>
-                <span className="text-[#D6CFB4]">April 28, 2024</span>
-              </li>
-            </Link>
-          </ul>
         </div>
         <div className="items-center">
           <p className="text-2xl font-bold underline mb-4 text-[#D6CFB4]">Pay</p>

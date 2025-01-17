@@ -1,8 +1,53 @@
-import Container from "@/components/Container";
+"use client";
+
 import Link from "next/link";
-import React from "react";
+import Container from "@/components/Container";
+import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
+import { useDispatch, useSelector } from "react-redux";
+import { resetCart, saveOrder } from "@/redux/shoppingSlice";
+import { StateProps } from "@/type";
+import toast from "react-hot-toast";
 
 const SuccessPage = () => {
+
+    const { productData } = useSelector((state: StateProps) => state?.shopping);
+    const dispatch = useDispatch();
+    const { userInfo }: any = useSelector(
+        (state: StateProps) => state.shopping
+    );
+
+    const handleResetCart = async () => {
+        try {
+            const res = await fetch("/api/postgres", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_id: userInfo ? userInfo.unique_id : "Anonymous",
+                }),
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                console.error("Error response from server:", error);
+                throw new Error(error.message || "Failed to reset cart.");
+            }
+
+            const result = await res.json();
+            console.log("Reset cart response:", result);
+
+            dispatch(resetCart());
+            toast.success("Cart reset successfully!");
+        } catch (error) {
+            console.error("Error resetting cart:", error);
+            toast.error(`An error occurred: ${(error as Error).message}`);
+        }
+    };
+
+    handleResetCart();
+
     return (
         <Container className="flex items-center justify-center py-20">
             <div className="min-h-[400px] flex flex-col items-center justify-center gap-y-5 mx-3">

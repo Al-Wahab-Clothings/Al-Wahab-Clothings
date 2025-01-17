@@ -6,7 +6,7 @@ interface Amount {
     const formattedAmount = new Number(amount).toLocaleString("en-US", {
       style: "currency",
       currency: "PKR",
-      maximumFractionDigits: 2,
+      maximumFractionDigits: 0,
     });
     return <span>{formattedAmount}</span>;
   };

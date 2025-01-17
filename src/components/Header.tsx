@@ -13,6 +13,7 @@ import { addUser, deleteUser } from "@/redux/shoppingSlice";
 import { BsBookmarks } from "react-icons/bs";
 import { Product, StateProps } from "@/type";
 import Logo from "./Logo";
+import { BiDotsVerticalRounded } from "react-icons/bi"; // Import 3-dots icon
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,8 @@ const Header = () => {
     setTotalAmt(amt);
   }, [productData]);
 
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
+
   return (
     <div className="bg-darkText h-20 top-0 sticky z-50">
       <Container className="w-full h-full flex items-center md:gap-x-5 justify-between">
@@ -60,7 +63,7 @@ const Header = () => {
           {/* Cart button */}
           <div>
             <Link href={"/cart"}>
-              <div className="bg-[#D6CFB4] hover:bg-darkText rounded-full text-black hover:text-[#D6CFB4] flex items-center justify-center gap-x-1 px-3 py-1.5 border-[1px] border-darkText hover:border-[#D6CFB4] duration-200 relative">
+              <div className="bg-[#D6CFB4] hover:bg-darkText rounded-full text-black hover:text-[#D6CFB4] flex items-center justify-center gap-x-1 px-3 py-1.5 border-[1px] border-darkText hover:border-[#D6CFB4] duration-200 relative mt-1">
                 <p className="text-sm font-semibold hidden sm:block">
                   <FormattedPrice amount={totalAmt ? totalAmt : 0} />
                 </p>
@@ -68,14 +71,14 @@ const Header = () => {
                 <span className="bg-[#D6CFB4] text-darkText rounded-full text-xs font-semibold absolute -right-2 -top-1 w-5 h-5 flex items-center justify-center shadow-xl shadow-black border-[0.2px] border-darkText">
                   {productData ? productData?.length : 0}
                 </span>
-              </div> 
+              </div>
             </Link>
           </div>
           {/* Login/Register */}
           {!session && (
-            <div onClick={() => signIn()} className="headerDiv cursor-pointer bg-darkText text-[#D6CFB4] hover:text-darkText hover:bg-[#D6CFB4]">
+            <div onClick={() => signIn()} className="headerDiv ml-1 cursor-pointer bg-darkText text-[#D6CFB4] hover:text-darkText hover:bg-[#D6CFB4]">
               <AiOutlineUser className="text-2xl" />
-              <p className="text-sm font-semibold">Login</p>
+              <p className="text-sm font-semibold md:block hidden">Login</p>
             </div>
           )}
           {/* Order button */}
@@ -95,16 +98,40 @@ const Header = () => {
               alt="user image"
               width={40}
               height={40}
-              className="rounded-full object-cover "
+              className="rounded-full ml-2 object-cover "
             />
           )}
           {/* Logout button */}
           {session && (
-            <div
-              onClick={() => signOut()}
-              className="headerDiv px-1 gap-x-1 cursor-pointer bg-[#D6CFB4] text-darkText hover:bg-darkText hover:text-[#D6CFB4]"
-            >
-              <FiLogOut className="text-sm" />
+            <div className="relative mt-2">
+              {/* Three Dots Button */}
+              <div
+                onClick={() => setShowLogoutConfirmation(!showLogoutConfirmation)}
+                className="gap-x-1 cursor-pointer flex items-center justify-center"
+              >
+                <BiDotsVerticalRounded className="text-2xl text-[#D6CFB4]" /> {/* Three Dots Icon */}
+              </div>
+
+              {/* Logout Confirmation */}
+              {showLogoutConfirmation && (
+                <div className="absolute right-0 mt-2 bg-[#D6CFB4] shadow-lg rounded-md border border-gray-300 p-2 z-50">
+                  <p className="text-sm mb-2">Are you sure you want to logout?</p>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => setShowLogoutConfirmation(false)}
+                      className="text-sm text-darkText px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => signOut()}
+                      className="text-sm px-3 py-1 bg-red-700 text-white hover:bg-red-800 rounded"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
