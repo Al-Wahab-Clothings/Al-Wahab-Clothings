@@ -1,24 +1,30 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    try {
-      const { slug } = req.body as { slug?: string }; // Ensure slug is typed as optional string
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json(); // Parse JSON body
+    const { slug } = body;
 
-      // Revalidate specific page or entire site
-      if (slug) {
-        await res.revalidate(`/product/${slug}`);
-      } else {
-        await res.revalidate('/'); // Revalidate homepage or any other route
-      }
-
-      return res.status(200).json({ revalidated: true });
-    } catch (err) {
-      console.error('Error revalidating:', err);
-      return res.status(500).json({ error: 'Error revalidating' });
+    if (!slug) {
+      return NextResponse.json(
+        { error: 'Slug is required for revalidation.' },
+        { status: 400 }
+      );
     }
-  }
 
-  // Return method not allowed for other HTTP methods
-  return res.status(405).json({ error: 'Method Not Allowed' });
+    // Trigger revalidation of a specific page
+    await fetch(`${process.env.NEXTAUTH_URL}/api/revalidate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug }),
+    });
+
+    return NextResponse.json({ message: 'Revalidation triggered successfully.' });
+  } catch (err) {
+    console.error('Error during revalidation:', err);
+    return NextResponse.json(
+      { error: 'Failed to trigger revalidation.' },
+      { status: 500 }
+    );
+  }
 }
