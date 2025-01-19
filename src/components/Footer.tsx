@@ -12,8 +12,8 @@ import payment from "@/images/payment.png";
 const Footer = () => {
   return (
     <div className="w-full bg-darkText text-slate-100">
-      <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 justify-items-center">
-        <div className="flex flex-col justify-center gap-8 col-span-2 gap-y-4">
+      <Container className="grid md:grid-cols-2 gap-10 place-items-center justify-between">
+        <div className="flex flex-col justify-center gap-8 gap-y-4">
           <h3 className="font-logo text-4xl text-[#D6CFB4] hover:text-orange-600 cursor-pointer duration-200">
             Al Wahab
           </h3>
@@ -38,23 +38,46 @@ const Footer = () => {
             </Link>
           </div>
         </div>
-        <div className="items-center col-span-2 text-[#D6CFB4]">
-          <p className="sm:text-2xl text-xl font-bold underline mb-4 ">Developed by:</p>
+        <div className="justify-items-center mb-2 text-[#D6CFB4]">
+          <p className="text-xl font-bold underline mb-4 ">Developed by :</p>
           <div className="flex gap-4 -ml-1 items-center justify-center">
             <Image
               src="/Ridalogo.png"
               alt="Rida logo"
-              width={25}
-              height={25}
+              width={30}
+              height={30}
               className="cursor-pointer hover:animate-slowspin"
             />
             <Link href="https://ridanaz-portfolio.vercel.app/">
-              <p className="text-lg mt-1 font-logo">Rida Naz</p>
+              <h3 className="text-2xl font-logo">Rida Naz</h3>
             </Link>
           </div>
+          <p className="mt-1 font-semibold text-slate-100 text-center">Transforming ideas into impactful online solutions!</p>
+          <p className="mt-3 hidden sm:block text-slate-100 text-center">Looking to bring your business online with a unique and modern website? Let&apos;s collaborate to create something amazing for your brand.</p>
+
+          <div className="sm:flex items-center justify-center gap-4 mt-4 text-[#D6CFB4]">
+            <Link
+              href="https://wa.me/923136488867"
+              target="_blank"
+              className="flex items-center gap-3 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
+            >
+              <BsWhatsapp />
+              Contact Me
+            </Link>
+            <span className="hidden sm:block">|</span>
+            <Link
+              href="https://ridanaz-portfolio.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 -ml-1 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
+            >
+              🌐 Visit My Portfolio
+            </Link>
+          </div>
+
         </div>
       </Container>
-      <div className="flex justify-center gap-10 -mt-[1.4rem] pb-2 sm:w-[80%] mx-auto text-[#D6CFB4] opacity-70 text-xs md:text-sm">
+      <div className="flex justify-center gap-10 -mt-[1.4rem] pb-2 mx-auto text-[#D6CFB4] opacity-70 text-xs md:text-sm">
         &#169; Al-Wahab 2025 Inc. all rights reserved
       </div>
     </div>
