@@ -4,17 +4,17 @@ import {
   BsInstagram,
   BsWhatsapp
 } from "react-icons/bs";
+import { FaGlobe } from "react-icons/fa";
 import Container from "./Container";
 import Link from "next/link";
 import Image from "next/image";
-import payment from "@/images/payment.png";
 
 const Footer = () => {
   return (
-    <div className="w-full bg-darkText text-slate-100">
+    <div className="w-full bg-darkText text-[#D6CFB4]">
       <Container className="grid md:grid-cols-2 gap-10 place-items-center justify-between">
         <div className="flex flex-col justify-center gap-8 gap-y-4">
-          <h3 className="font-logo text-4xl text-[#D6CFB4] hover:text-orange-600 cursor-pointer duration-200">
+          <h3 className="font-logo text-4xl hover:text-orange-600 cursor-pointer duration-200">
             Al Wahab
           </h3>
           <p className="hidden sm:block">
@@ -52,8 +52,8 @@ const Footer = () => {
               <h3 className="text-2xl font-logo">Rida Naz</h3>
             </Link>
           </div>
-          <p className="mt-1 font-semibold text-slate-100 text-center">Transforming ideas into impactful online solutions!</p>
-          <p className="mt-3 hidden sm:block text-slate-100 text-center">Looking to bring your business online with a unique and modern website? Let&apos;s collaborate to create something amazing for your brand.</p>
+          <p className="mt-1 font-semibold text-center">Transforming ideas into impactful online solutions!</p>
+          <p className="mt-3 hidden sm:block text-center">Looking to bring your business online with a unique and modern website? Let&apos;s collaborate to create something amazing for your brand.</p>
 
           <div className="sm:flex items-center justify-center gap-4 mt-4 text-[#D6CFB4]">
             <Link
@@ -69,9 +69,10 @@ const Footer = () => {
               href="https://ridanaz-portfolio.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 -ml-1 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
+              className="flex items-center gap-3 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
             >
-              🌐 Visit My Portfolio
+              <FaGlobe />
+              Visit My Portfolio
             </Link>
           </div>
 
