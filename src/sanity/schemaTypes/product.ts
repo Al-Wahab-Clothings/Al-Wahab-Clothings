@@ -21,6 +21,11 @@ export const product = defineType({
             title: "Is New",
         },
         {
+            name: "isTrending",
+            type: "boolean",
+            title: "Is Trending",
+        },
+        {
             name: "oldPrice",
             type: "number",
             title: "Old Price",
@@ -31,10 +36,29 @@ export const product = defineType({
             title: "Product Price",
         },
         {
-            name: "description",
-            type: "string",
-            title: "Description",
+            name: "rating",
+            type: "number",
+            title: "Rating",
         },
+        {
+            name: "quantity",
+            type: "number",
+            title: "Quantity",
+        },
+        {
+            name: 'description',
+            title: 'Description',
+            type: 'array',
+            of: [
+              {
+                type: 'block',
+                marks: {
+                  decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                },
+                styles: [{ title: 'Normal', value: 'normal' }],
+              },
+            ],
+          },
         {
             name: "image",
             type: "image",
@@ -52,20 +76,5 @@ export const product = defineType({
             title: "Product Brand",
             to: [{ type: "brand" }],
           }),
-        {
-            name: "rating",
-            type: "number",
-            title: "Rating",
-        },
-        {
-            name: "quantity",
-            type: "number",
-            title: "Quantity",
-        },
-        {
-            name: "isTrending",
-            type: "boolean",
-            title: "Is Trending",
-        },
     ]
 })

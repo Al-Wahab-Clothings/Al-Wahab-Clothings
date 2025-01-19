@@ -15,7 +15,7 @@ const Footer = () => {
       <Container className="grid md:grid-cols-2 gap-10 place-items-center justify-between">
         <div className="flex flex-col justify-center gap-8 gap-y-4">
           <h3 className="font-logo text-4xl hover:text-orange-600 cursor-pointer duration-200">
-            Al Wahab
+            Al Wahab Clothings
           </h3>
           <p className="hidden sm:block">
             Al Wahab Clothing is an online fashion store specializing in trendy and affordable apparel. The website offers a seamless shopping experience with its sleek design and easy navigation. It caters to diverse styles, ensuring quality and customer satisfaction.

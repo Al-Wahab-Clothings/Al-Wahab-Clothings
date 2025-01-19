@@ -8,6 +8,7 @@ import { resetOrder } from "@/redux/shoppingSlice";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { urlForImage } from "@/sanity/lib/image";
+import RenderDescription from "./Description";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const OrderDetails = () => {
             {orderData?.order?.map((item: Product) => (
               <div
                 key={item?.id}
-                className="py-2 border-b-[1px] border-darkText border-opacity-50 grid sm:grid-cols-6 grid-cols-4 items-center"
+                className="py-2 border-b-[1px] border-b-gray-300 border-opacity-50 grid sm:grid-cols-6 grid-cols-4 items-center"
               >
                 <div className="sm:col-span-3 flex items-center gap-4 text-sm">
                   <Image
@@ -53,7 +54,9 @@ const OrderDetails = () => {
                     <h3 className="text-base font-semibold mb-.5 sm:block hidden">
                       {item?.title}
                     </h3>
-                    <p className="hidden sm:block">{item?.description}</p>
+                    {/* <p className="hidden sm:block">
+                      {item?.description && RenderDescription(item?.description)}
+                    </p> */}
                   </div>
                 </div>
                 <p className="flex items-center justify-center">

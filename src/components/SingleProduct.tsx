@@ -10,12 +10,12 @@ import { StateProps } from "@/type";
 import { BsWhatsapp } from "react-icons/bs";
 import Link from "next/link";
 import { urlForImage } from "@/sanity/lib/image";
+import RenderDescription from "./Description";
 
 const SingleProduct = ({ product }: any) => {
   const dispatch = useDispatch();
 
-  const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${product.title}*.
-Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}`;
+  const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${product.title}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${product.id}`)}`;
 
   const { userInfo }: any = useSelector(
     (state: StateProps) => state.shopping
@@ -66,7 +66,9 @@ Here is the link: https://al-wahab-clothings.vercel.app/product/${product.id}`)}
             <FormattedPrice amount={product?.price} />
           </p>
         </div>
-        <p className="text-darkText opacity-80">{product?.description}</p>
+        <p className="text-darkText opacity-80">
+        {product?.description && RenderDescription(product?.description)}
+        </p>
         <div className="text-sm text-darkText flex flex-col">
           <span>
             SKU: <span className="text-darkText">{product?.id}</span>

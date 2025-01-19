@@ -87,4 +87,5 @@ Admin interface for adding, updating, or managing product data.
 20. npm add -D pg @next/env
 21. npm install @neondatabase/serverless
 22. npm install postgres
+23. npm install @portabletext/react
 ```

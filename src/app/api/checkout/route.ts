@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { Product } from "../../../type";
 import Stripe from "stripe";
 import { urlForImage } from "@/sanity/lib/image";
+import RenderDescription from "@/components/Description";
 
 export const POST = async (request: NextRequest) => {
     // @ts-ignore
@@ -17,7 +18,6 @@ export const POST = async (request: NextRequest) => {
                 unit_amount: item.price * 100,
                 product_data: {
                     name: item.title,
-                    description: item.description,
                     images: [urlForImage(item.image).url()],
                 },
             },

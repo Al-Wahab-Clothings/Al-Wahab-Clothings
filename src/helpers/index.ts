@@ -2,23 +2,23 @@ import { client } from "@/sanity/lib/client";
 
 export const getProductData = async () => {
   const res = await client.fetch(`*[_type=="product"] {
-        id,
-        title,
-        oldPrice,
-        price,
-        image,
-        category -> {
-          name
-        },
-        brand -> {
-          name
-        },
-        description,
-        isNew,
-        rating,
-        quantity,
-        isTrending,
-    }`)
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    category -> {
+      name
+    },
+    brand -> {
+      name
+    }
+  }`)
   return res
 }
 
@@ -26,21 +26,22 @@ export const getTrendingProduct = async () => {
   const res = await client.fetch(`*[_type == "product" && isTrending == true] {
     id,
     title,
+    isNew,
+    isTrending,
     oldPrice,
     price,
+    rating,
+    quantity,
+    description,
     image,
     category -> {
       name
     },
     brand -> {
       name
-    },
-    description,
-    isNew,
-    rating,
-    quantity,
-    isTrending,
-}`);
+    }
+  }`
+  );
   return res
 };
 
@@ -54,21 +55,21 @@ export const getSingleProduct = async (_id: number) => {
   const query = `*[_type == "product" && id == $_id]{
     id,
     title,
+    isNew,
+    isTrending,
     oldPrice,
     price,
+    rating,
+    quantity,
+    description,
     image,
     category -> {
       name
     },
     brand -> {
       name
-    },
-    description,
-    isNew,
-    rating,
-    quantity,
-    isTrending,
-}[0]`
+    }
+      }[0]`
   const result = await client.fetch(query, { _id });
   return result;
 };

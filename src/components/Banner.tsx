@@ -12,7 +12,7 @@ const Banner = () => {
     const { onClick } = props;
     return (
       <div
-        className="hidden sm:block p-3 bg-[#D6CFB4] text-darkText hover:text-[#D6CFB4] hover:bg-darkText cursor-pointer duration-200 rounded-full text-2xl flex items-center justify-center z-20 absolute left-2 top-1/2"
+        className="hidden sm:block md:p-2 p-1 bg-[#D6CFB4] text-darkText hover:text-[#D6CFB4] hover:bg-darkText cursor-pointer duration-200 rounded-full text-2xl flex items-center justify-center z-20 absolute left-2 top-1/2"
         onClick={onClick}
       >
         <PiCaretLeftLight />
@@ -23,7 +23,7 @@ const Banner = () => {
     const { onClick } = props;
     return (
       <div
-        className="hidden sm:block p-3 bg-[#D6CFB4] text-darkText hover:text-[#D6CFB4] hover:bg-darkText cursor-pointer duration-200 rounded-full text-2xl flex items-center justify-center z-20 absolute right-2 top-1/2"
+        className="hidden sm:block md:p-2 p-1 bg-[#D6CFB4] text-darkText hover:text-[#D6CFB4] hover:bg-darkText cursor-pointer duration-200 rounded-full text-2xl flex items-center justify-center z-20 absolute right-2 top-1/2"
         onClick={onClick}
       >
         <PiCaretRightLight />

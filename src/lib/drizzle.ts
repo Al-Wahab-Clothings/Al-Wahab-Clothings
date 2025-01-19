@@ -16,11 +16,34 @@ export const cartTable = pgTable("cart", {
     quantity: integer("quantity").notNull()
 })
 
-const sql = neon(process.env.DATABASE_URL!);
+// Define the orders table
+export const ordersTable = pgTable("orders", {
+    id: serial("id").primaryKey(),
+    user_id: varchar("user_id", {
+        length: 255
+    }).notNull(),
+    username: varchar("username", {
+        length: 255
+    }),
+    product_id: varchar("product_id", {
+        length: 255
+    }).notNull(), // Product ID
+    quantity: integer("quantity").notNull(),
+    status: varchar("status", {
+        length: 50
+    }).default("pending").notNull() // Order status: "pending" or "paid"
+});
 
+const sql = neon(process.env.DATABASE_URL!);
 export const db = drizzle(sql)
 
 export const getExampleTable = async () => {
     const selectResult = await db.select().from(cartTable)
-    console.log ("Results", selectResult)
+    console.log("Results", selectResult)
 }
+
+// Example function to fetch all orders
+export const getOrders = async () => {
+    const selectResult = await db.select().from(ordersTable);
+    console.log("Orders:", selectResult);
+};

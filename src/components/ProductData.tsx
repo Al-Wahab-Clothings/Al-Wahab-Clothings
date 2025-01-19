@@ -21,8 +21,7 @@ const ProductsData = ({ item }: ItemProps) => {
         (state: StateProps) => state.shopping
     );
 
-    const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${item.title}*.
-Here is the link: https://al-wahab-clothings.vercel.app/product/${item.id}`)}`;
+    const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${item.title}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${item.id}`)}`;
 
     useEffect(() => {
         const fetchCartData = async () => {
