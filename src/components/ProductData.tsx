@@ -21,7 +21,8 @@ const ProductsData = ({ item }: ItemProps) => {
         (state: StateProps) => state.shopping
     );
 
-    const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${item.title}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${item.id}`)}`;
+    const cleanTitle = item.title.trim().replace(/\s+/g, ' ');
+    const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${cleanTitle}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${item.id}`)}`;
 
     useEffect(() => {
         const fetchCartData = async () => {

@@ -114,7 +114,7 @@ const Header = () => {
 
               {/* Logout Confirmation */}
               {showLogoutConfirmation && (
-                <div className="absolute right-0 mt-2 bg-[#D6CFB4] shadow-lg rounded-md border border-gray-300 py-2 px-4 z-50">
+                <div className="absolute right-0 mt-2 bg-[#D6CFB4] shadow-lg rounded-md border border-darkText py-2 px-4 z-50 border-opacity-30">
                   <p className="text-sm mb-2">Are you sure you want to logout?</p>
                   <div className="flex justify-end gap-2">
                     <button

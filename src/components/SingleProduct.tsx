@@ -15,7 +15,8 @@ import RenderDescription from "./Description";
 const SingleProduct = ({ product }: any) => {
   const dispatch = useDispatch();
 
-  const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${product.title}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${product.id}`)}`;
+  const cleanTitle = product.title.trim().replace(/\s+/g, ' ');
+  const whatsappLink = `https://wa.me/923242886759?text=${encodeURIComponent(`Hi, I'm interested in this product: *${cleanTitle}*.\n\nHere is the link: https://www.alwahabclothings.com/product/${product.id}`)}`;
 
   const { userInfo }: any = useSelector(
     (state: StateProps) => state.shopping
