@@ -1,7 +1,7 @@
 import { Image as IImage } from "sanity"
 
 export interface Product {
-  id: number;
+  id: string;
   title: string;
   isNew: boolean;
   isTrending: boolean;
@@ -21,7 +21,6 @@ export interface Product {
     markDefs: any[];
     style: string;
   }>;
-  category: string;
   brand: string;
   image: IImage;
 }
@@ -30,12 +29,22 @@ export interface ItemProps {
   item: Product;
 }
 
+export interface Order {
+  title: string;
+  price: number;
+  image: IImage;
+  orderId: string;
+  product: Product;
+  quantity: number;
+  status: string; 
+}
+
 export interface StateProps {
   shopping: {
     productData: [];
     userInfo: {};
     orderData: {
-      order: Product[];
+      orders: Order[];
     };
   };
   user: {

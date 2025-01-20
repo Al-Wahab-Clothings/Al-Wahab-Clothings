@@ -75,9 +75,6 @@ const SingleProduct = ({ product }: any) => {
             SKU: <span className="text-darkText">{product?.id}</span>
           </span>
           <span>
-            Category: <span className="text-darkText">{product?.category.name}</span>
-          </span>
-          <span>
             Brand: <span className="text-darkText font-bold">{product?.brand.name}</span>
           </span>
         </div>

@@ -1,14 +1,14 @@
-import { defineType, defineField } from "sanity"
+import { defineType } from "sanity"
 
-export const product = defineType({
-    name: "product",
+export const khaddar = defineType({
+    name: "khaddar",
     type: "document",
-    title: "Product",
+    title: "Khaddar",
     fields: [
         {
             name: "id",
-            type: "number",
-            title: "ID",
+            type: "string",
+            title: "ID (Must be Unique)",
         },
         {
             name: "title",
@@ -36,6 +36,11 @@ export const product = defineType({
             title: "Product Price",
         },
         {
+            name: "brand",
+            type: "string",
+            title: "Product Brand",
+        },
+        {
             name: "rating",
             type: "number",
             title: "Rating",
@@ -50,31 +55,19 @@ export const product = defineType({
             title: 'Description',
             type: 'array',
             of: [
-              {
-                type: 'block',
-                marks: {
-                  decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                {
+                    type: 'block',
+                    marks: {
+                        decorators: [{ title: 'Strong', value: 'strong' }, { title: 'Emphasis', value: 'em' }],
+                    },
+                    styles: [{ title: 'Normal', value: 'normal' }],
                 },
-                styles: [{ title: 'Normal', value: 'normal' }],
-              },
             ],
-          },
+        },
         {
             name: "image",
             type: "image",
             title: "Product Image",
         },
-        defineField({
-            name: "category",
-            type: "reference",
-            title: "Product Category",
-            to: [{ type: "category" }],
-          }),
-        defineField({
-            name: "brand",
-            type: "reference",
-            title: "Product Brand",
-            to: [{ type: "brand" }],
-          }),
     ]
 })

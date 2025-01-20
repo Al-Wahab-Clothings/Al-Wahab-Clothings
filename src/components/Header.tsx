@@ -82,7 +82,7 @@ const Header = () => {
             </div>
           )}
           {/* Order button */}
-          {orderData?.order?.length > 0 && session && (
+          {orderData?.orders?.length > 0 && session && (
             <Link
               href={"/order"}
               className="headerDiv px-2 gap-x-1 cursor-pointer bg-[#D6CFB4] text-darkText hover:bg-darkText hover:text-[#D6CFB4]"

@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { BsWhatsapp } from "react-icons/bs";
 import { urlForImage } from "@/sanity/lib/image";
 
-const ProductsData = ({ item }: ItemProps) => {
+const ProductsCard = ({ item }: ItemProps) => {
     const dispatch = useDispatch();
     const { data: session } = useSession();
     const { userInfo }: any = useSelector(
@@ -32,7 +32,7 @@ const ProductsData = ({ item }: ItemProps) => {
                     throw new Error("Failed to fetch cart data");
                 }
                 const data = await response.json();
-                const cartProduct = await data.allCartData.map(async (item: any) => await getSingleProduct(Number(item.product_id)));
+                const cartProduct = await data.allCartData.map(async (item: any) => await getSingleProduct(String(item.product_id)));
 
                 const cartProducts = await Promise.all(cartProduct);
 
@@ -107,7 +107,7 @@ const ProductsData = ({ item }: ItemProps) => {
                         )}
                         {/* WhatsApp Icon */}
                         <Link href={whatsappLink} target="_blank" rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()} >  {/*Prevent navigation to parent link*/}
+                            onClick={(e) => e.stopPropagation()} >
                             <div className="absolute top-2 right-2 bg-[#168a40] p-2 rounded-full flex justify-center items-center hover:shadow-lg z-20 hover:scale-110">
                                 <BsWhatsapp size={22} color="white" />
                             </div>
@@ -147,4 +147,4 @@ const ProductsData = ({ item }: ItemProps) => {
     );
 };
 
-export default ProductsData;
+export default ProductsCard;

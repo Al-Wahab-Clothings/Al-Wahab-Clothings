@@ -47,3 +47,23 @@ export const getOrders = async () => {
     const selectResult = await db.select().from(ordersTable);
     console.log("Orders:", selectResult);
 };
+
+// // Example of database interaction function
+// export const updateOrderStatus = async (orderId: string, status: string) => {
+//     try {
+//       // Assuming you are using Neon HTTP database client
+//       const db = new NeonHttpDatabase<Record<string, never>>(); // Ensure the proper initialization here
+  
+//       // Query the 'orders' table to update the status
+//       const response = await db
+//         .table("orders")
+//         .update({ status }) 
+//         .where("orderId", orderId) 
+//         .execute(); 
+  
+//       return response;
+//     } catch (error) {
+//       console.error("Error updating order status:", error);
+//       throw new Error("Unable to update order status.");
+//     }
+//   };

@@ -53,7 +53,7 @@ Admin interface for adding, updating, or managing product data.
 
 * **Drizzle ORM:** Simplified database interaction.
 
-* **Vercel Postgres:** Seamless database hosting.
+* **Neon Postgres:** Seamless database hosting.
 
 ## 6. Utilities
 

@@ -8,7 +8,7 @@ import Image from "next/image";
 import BannerText from "./BannerText";
 
 const Banner = () => {
-  const NextArrow = (props: any) => {
+  const PrevArrow = (props: any) => {
     const { onClick } = props;
     return (
       <div
@@ -19,7 +19,7 @@ const Banner = () => {
       </div>
     );
   };
-  const PrevArrow = (props: any) => {
+  const NextArrow = (props: any) => {
     const { onClick } = props;
     return (
       <div

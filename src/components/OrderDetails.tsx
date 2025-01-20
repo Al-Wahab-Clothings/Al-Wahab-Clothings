@@ -1,48 +1,71 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { Product, StateProps } from "../type";
+import { Order, Product, StateProps } from "../type";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import FormattedPrice from "./FormattedPrice";
-import { resetOrder } from "@/redux/shoppingSlice";
+import { resetOrder, saveOrder } from "@/redux/shoppingSlice";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { urlForImage } from "@/sanity/lib/image";
-import RenderDescription from "./Description";
+import toast from "react-hot-toast";
 
 const OrderDetails = () => {
   const dispatch = useDispatch();
-  const { orderData } = useSelector((state: StateProps) => state?.shopping);
+  const { orderData }: any = useSelector((state: StateProps) => state.shopping);
 
   const [totalAmount, setTotalAmount] = useState(0);
+
+  // const fetchOrders = async () => {
+  //   try {
+  //     const res = await fetch(`/api/orders?user_id=${userInfo?.unique_id || "Anonymous"}`);
+  //     if (!res.ok) throw new Error("Failed to fetch orders.");
+
+  //     const data = await res.json();
+  //     if (data?.allOrdersData) {
+  //       dispatch(saveOrder(data.allOrdersData)); // Ensure the API returns the correct structure
+  //     } else {
+  //       toast.error("No orders found.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching orders:", error);
+  //     toast.error("Failed to fetch orders.");
+  //   }
+  // };
+
   useEffect(() => {
     let amt = 0;
-    orderData?.order?.map((item: Product) => {
+    orderData?.order?.forEach((item: Product) => {
       amt += item.price * item.quantity;
-      return;
     });
     setTotalAmount(amt);
   }, [orderData.order]);
+
+  // useEffect(() => {
+  //   if (userInfo?.unique_id) {
+  //     fetchOrders();
+  //   }
+  // }, [userInfo]);
 
   return (
     <div className="my-28">
       {orderData?.order?.length > 0 ? (
         <div>
           <h2 className="font-bold text-5xl -mt-10 mb-4 font-logo text-darkText">Your Orders</h2>
-          <div className="grid sm:grid-cols-6 grid-cols-4 uppercase text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300 ">
+          <div className="grid sm:grid-cols-6 grid-cols-4 uppercase text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300">
             <p className="sm:col-span-3 justify-center">Items</p>
-            <p className="flex items-center justify-end hidden md:block md:ml-9 lg:ml-12 xl:ml-16">Quantity</p>
-            <p className="flex items-center justify-center block md:hidden">Qty.</p>
-            <p className="flex items-center justify-center">Per Unit</p>
-            <p className="flex items-center justify-center">Amount</p>
+            <p className="hidden md:block text-center">Quantity</p>
+            <p className="block md:hidden text-center">Qty.</p>
+            <p className="text-center">Per Unit</p>
+            <p className="text-center">Amount</p>
           </div>
-          <div className="py-2 flex flex-col justify-center gap-2 mt-3">
-            {orderData?.order?.map((item: Product) => (
+          <div className="py-2 flex flex-col gap-2 mt-3">
+            {orderData?.order?.map((item: Order) => (
               <div
-                key={item?.id}
-                className="py-2 border-b-[1px] border-b-gray-300 border-opacity-50 grid sm:grid-cols-6 grid-cols-4 items-center"
+                key={item?.orderId}
+                className="py-2 border-b-[1px] grid sm:grid-cols-6 grid-cols-4 items-center"
               >
-                <div className="sm:col-span-3 flex items-center gap-4 text-sm">
+                <div className="sm:col-span-3 flex items-center gap-4">
                   <Image
                     src={urlForImage(item?.image).url()}
                     alt="product image"
@@ -51,47 +74,41 @@ const OrderDetails = () => {
                     className="w-12 h-12 object-cover"
                   />
                   <div>
-                    <h3 className="text-base font-semibold mb-.5 sm:block hidden">
-                      {item?.title}
-                    </h3>
-                    {/* <p className="hidden sm:block">
-                      {item?.description && RenderDescription(item?.description)}
-                    </p> */}
+                    <h3 className="text-base font-semibold">{item?.title}</h3>
                   </div>
                 </div>
-                <p className="flex items-center justify-center">
-                  {item?.quantity}
-                </p>
-                <p className="flex items-center justify-center">
+                <p className="text-center">{item?.quantity}</p>
+                <p className="text-center">
                   <FormattedPrice amount={item?.price} />
                 </p>
-                <p className="flex items-center justify-center">
+                <p className="text-center">
                   <FormattedPrice amount={item?.price * item.quantity} />
                 </p>
+                <p className="text-center">{item?.status}</p>
               </div>
             ))}
           </div>
-          <div className="text-lg font-medium py-2 mt-4 border-b-[1px] border-b-gray-300">
+          <div className="py-2 mt-4 border-b-[1px]">
             <p>Payment Details</p>
           </div>
           <p className="py-2">
-            Total Paid{" "}
+            Total Paid:{" "}
             <span className="text-xl font-semibold">
               <FormattedPrice amount={totalAmount} />
             </span>
           </p>
           <Button
             onClick={() => dispatch(resetOrder())}
-            className="text-white bg-red-700 hover:bg-red-800 mt-5 border-[1px] py-1 px-4 font-medium rounded-md cursor-pointer duration-200"
+            className="bg-red-700 text-white hover:bg-red-800 mt-5 px-4 py-1 rounded-md"
           >
             Reset Order
           </Button>
         </div>
       ) : (
-        <div className="py-14 text-black text-2xl text-center">
-          <p>Nothing to show</p>
-          <Link href={"/"}>
-            <button className="mt-4 bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full text-base font-semibold hover:bg-[#D6CFB4] hover:text-darkText duration-300">
+        <div className="py-14 text-center">
+          <p className="text-2xl font-semibold">Nothing to show</p>
+          <Link href="/">
+            <button className="mt-4 bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full font-semibold hover:bg-[#D6CFB4] hover:text-darkText duration-300">
               Continue Shopping
             </button>
           </Link>

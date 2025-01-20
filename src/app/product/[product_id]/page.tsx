@@ -1,12 +1,11 @@
 import Container from "@/components/Container";
 import { getSingleProduct, getTrendingProduct } from "@/helpers";
 import { Product } from "../../../type";
-import ProductsData from "@/components/ProductData";
+import ProductsData from "@/components/ProductsCard";
 import SingleProduct from "@/components/SingleProduct";
 
 const ProductsPage = async (props: any) => {
-  const _idString = props.params.product_id;
-  const _id = Number(_idString);
+  const _id = props.params.product_id;
   const product = await getSingleProduct(_id);
   const data = await getTrendingProduct();
 

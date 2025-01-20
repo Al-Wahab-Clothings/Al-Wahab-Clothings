@@ -8,10 +8,17 @@ interface User {
   unique_id: number
 }
 
+interface Order {
+  order: Product[]; // Or any structure your order uses
+  orderId: string; // Example of additional properties in an order
+  totalPrice: number;
+  status: string;
+}
+
 interface StoreState {
   productData: Product[];
   userInfo: null | User;
-  orderData: any[];
+  orderData: Order[];
   cartData: Product[];
 }
 
@@ -76,6 +83,13 @@ export const shoppingSlice = createSlice({
     },
     resetOrder: (state) => {
       state.orderData = [];
+    },
+    updateOrderStatus: (state, action: PayloadAction<{ orderId: string; status: string }>) => {
+      const { orderId, status } = action.payload;
+      const order = state.orderData.find((o) => o.orderId === orderId);
+      if (order) {
+        order.status = status;
+      }
     },
   },
 });

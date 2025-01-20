@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
             .where(and(
                 eq(ordersTable.user_id, req.user_id),
                 eq(ordersTable.product_id, req.product_id),
-                eq(ordersTable.status, "pending")
+                eq(ordersTable.status, req.status || "pending")
             ))
             .then(result => result[0]); // Get the first item from the result array
 
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
                 .where(and(
                     eq(ordersTable.user_id, req.user_id),
                     eq(ordersTable.product_id, req.product_id),
-                    eq(ordersTable.status, "pending")
+                    eq(ordersTable.status, req.status || "pending")
                 ))
                 .returning();
         } else {
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
                 quantity: req.quantity || 1,
                 user_id: req.user_id,
                 username: req.username,
-                status: "pending" // Default status for new orders
+                status: req.status || "pending" // Default status for new orders
             }).returning();
         }
 

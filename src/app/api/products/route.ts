@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import ProductsData from "@/components/ProductData";
+import ProductsData from "@/components/ProductsCard";
 
 export const GET = async () => {
   try {

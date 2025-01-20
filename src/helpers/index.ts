@@ -1,7 +1,7 @@
 import { client } from "@/sanity/lib/client";
 
-export const getProductData = async () => {
-  const res = await client.fetch(`*[_type=="product"] {
+export const getLawn = async () => {
+  const res = await client.fetch(`*[_type=="lawn"] {
     id,
     title,
     isNew,
@@ -12,18 +12,64 @@ export const getProductData = async () => {
     quantity,
     description,
     image,
-    category -> {
-      name
-    },
-    brand -> {
-      name
-    }
+    brand
+  }`)
+  return res
+}
+
+export const getEmbroided = async () => {
+  const res = await client.fetch(`*[_type=="embroided"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
+  }`)
+  return res
+}
+
+export const getChickenKari = async () => {
+  const res = await client.fetch(`*[_type=="chickenKari"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
+  }`)
+  return res
+}
+
+export const getKhaddar = async () => {
+  const res = await client.fetch(`*[_type=="khaddar"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
   }`)
   return res
 }
 
 export const getTrendingProduct = async () => {
-  const res = await client.fetch(`*[_type == "product" && isTrending == true] {
+  const res = await client.fetch(`*[_type in ["lawn", "embroidered", "chickenKari", "khaddar"] && isTrending == true] {
     id,
     title,
     isNew,
@@ -34,12 +80,7 @@ export const getTrendingProduct = async () => {
     quantity,
     description,
     image,
-    category -> {
-      name
-    },
-    brand -> {
-      name
-    }
+    brand
   }`
   );
   return res
@@ -51,8 +92,8 @@ export const calculatePercentage = (oldPrice: any, price: any) => {
     : 0;
 };
 
-export const getSingleProduct = async (_id: number) => {
-  const query = `*[_type == "product" && id == $_id]{
+export const getSingleProduct = async (_id: string) => {
+  const query = `*[_type in ["lawn", "embroidered", "chickenKari", "khaddar"] && id == $_id]{
     id,
     title,
     isNew,
@@ -63,12 +104,7 @@ export const getSingleProduct = async (_id: number) => {
     quantity,
     description,
     image,
-    category -> {
-      name
-    },
-    brand -> {
-      name
-    }
+    brand
       }[0]`
   const result = await client.fetch(query, { _id });
   return result;

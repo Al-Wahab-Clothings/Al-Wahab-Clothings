@@ -1,18 +1,24 @@
 import { Product as IProduct } from "@/type"
-import ProductsData from "./ProductData"
 import Container from "./Container"
-import { getProductData } from "@/helpers"
+import { getChickenKari, getEmbroided, getKhaddar, getLawn } from "@/helpers"
+import ProductsData from "./ProductsData"
 
 export default async function Product() {
-    const data: IProduct[] = await getProductData()
+    const lawn: IProduct[] = await getLawn()
+    const embroided: IProduct[] = await getEmbroided()
+    const chickenKari: IProduct[] = await getChickenKari()
+    const khaddar: IProduct[] = await getKhaddar()
 
     return (
-        <div id="products" >
-        <Container className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {data.map((item) => (
-                <ProductsData item={item} key={item.id} />
-            ))}
-        </Container>
+        <div id="products">
+            <Container>
+                <ProductsData
+                    lawn={lawn}
+                    embroided={embroided}
+                    chickenKari={chickenKari}
+                    khaddar={khaddar}
+                />
+            </Container>
         </div>
     )
 }
