@@ -117,7 +117,6 @@ const CartItem = ({ item }: any) => {
                                 height={500}
                                 alt="product image"
                                 className="w-20 h-20 object-cover"
-                                loading="lazy"
                             />
                         </Link>
                     </div>

@@ -15,23 +15,55 @@ const OrderDetails = () => {
   const { orderData }: any = useSelector((state: StateProps) => state.shopping);
 
   const [totalAmount, setTotalAmount] = useState(0);
+  const { userInfo }: any = useSelector(
+    (state: StateProps) => state.shopping
+  );
 
-  // const fetchOrders = async () => {
-  //   try {
-  //     const res = await fetch(`/api/orders?user_id=${userInfo?.unique_id || "Anonymous"}`);
-  //     if (!res.ok) throw new Error("Failed to fetch orders.");
+  const fetchOrders = async () => {
+    try {
+      const res = await fetch(`/api/orders?user_id=${userInfo?.unique_id || "Anonymous"}`);
+      if (!res.ok) throw new Error("Failed to fetch orders.");
 
-  //     const data = await res.json();
-  //     if (data?.allOrdersData) {
-  //       dispatch(saveOrder(data.allOrdersData)); // Ensure the API returns the correct structure
-  //     } else {
-  //       toast.error("No orders found.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching orders:", error);
-  //     toast.error("Failed to fetch orders.");
-  //   }
-  // };
+      const data = await res.json();
+      if (data?.allOrdersData) {
+        dispatch(saveOrder(data.allOrdersData)); // Ensure the API returns the correct structure
+      } else {
+        toast.error("No orders found.");
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      toast.error("Failed to fetch orders.");
+    }
+  };
+
+  const handleResetCart = async () => {
+    try {
+      const res = await fetch("/api/postgres", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userInfo ? userInfo.unique_id : "Anonymous",
+        }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error("Error response from server:", error);
+        throw new Error(error.message || "Failed to reset Order.");
+      }
+
+      const result = await res.json();
+      console.log("Reset cart response:", result);
+
+      dispatch(resetOrder());
+      toast.success("Order reset successfully!");
+    } catch (error) {
+      console.error("Error resetting cart:", error);
+      toast.error(`An error occurred: ${(error as Error).message}`);
+    }
+  };
 
   useEffect(() => {
     let amt = 0;
@@ -41,15 +73,15 @@ const OrderDetails = () => {
     setTotalAmount(amt);
   }, [orderData.order]);
 
-  // useEffect(() => {
-  //   if (userInfo?.unique_id) {
-  //     fetchOrders();
-  //   }
-  // }, [userInfo]);
+  useEffect(() => {
+    if (userInfo?.unique_id) {
+      fetchOrders();
+    }
+  }, [userInfo]);
 
   return (
     <div className="my-28">
-      {orderData?.order?.length > 0 ? (
+      {orderData?.orders?.length > 0 ? (
         <div>
           <h2 className="font-bold text-5xl -mt-10 mb-4 font-logo text-darkText">Your Orders</h2>
           <div className="grid sm:grid-cols-6 grid-cols-4 uppercase text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300">
@@ -98,7 +130,7 @@ const OrderDetails = () => {
             </span>
           </p>
           <Button
-            onClick={() => dispatch(resetOrder())}
+            onClick={handleResetCart}
             className="bg-red-700 text-white hover:bg-red-800 mt-5 px-4 py-1 rounded-md"
           >
             Reset Order

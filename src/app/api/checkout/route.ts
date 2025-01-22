@@ -2,7 +2,6 @@ import { NextResponse, NextRequest } from "next/server";
 import { Product } from "../../../type";
 import Stripe from "stripe";
 import { urlForImage } from "@/sanity/lib/image";
-import RenderDescription from "@/components/Description";
 
 export const POST = async (request: NextRequest) => {
     // @ts-ignore

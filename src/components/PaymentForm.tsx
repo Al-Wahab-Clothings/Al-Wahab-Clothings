@@ -24,6 +24,7 @@ const PaymentForm = () => {
     productData.map((item: Product) => {
       if (item.price) {
         amt += (item.price || 0) * (item.quantity || 0);
+        return;
       }
     });
     setTotalAmt(amt);
