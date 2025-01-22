@@ -79,7 +79,7 @@ Admin interface for adding, updating, or managing product data.
 13. npm install @reduxjs/toolkit react-redux
 14. npm i redux-persist
 15. npm i @stripe/stripe-js
-16. openssl rand -base64 32    <!-- for generating next_auth_secret & use this command in `git bash` -->
+16. openssl rand -base64 32  <!-- for generating next_auth_secret & use this command in `git bash` -->
 18. npm i @vercel/postgres
 17. npm install drizzle-orm --force
 18. npm install @radix-ui/react-slot
