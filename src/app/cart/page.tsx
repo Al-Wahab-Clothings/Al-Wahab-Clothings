@@ -79,8 +79,8 @@ const CartPage = () => {
         </Container>
       ) : (
         <div className="flex flex-col gap-y-6 items-center justify-center h-[500px] px-4">
-          <p className="border-[1px] border-[#D6CFB4] font-semibold w-full p-2 text-center">
-            Your product cart is currently empty
+          <p className="font-semibold w-full text-center text-xl">
+            Your product cart is currently empty!
           </p>
           <Link href={"/"}>
             <button className="bg-darkText font-bold text-white hover:text-darkText py-2 px-6 rounded-md hover:bg-[#D6CFB4] duration-200">

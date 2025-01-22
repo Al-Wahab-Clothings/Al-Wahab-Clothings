@@ -138,9 +138,9 @@ const OrderDetails = () => {
         </div>
       ) : (
         <div className="py-14 text-center">
-          <p className="text-2xl font-semibold">Nothing to show</p>
+          <p className="text-xl font-semibold">You have&apos;nt place any order yet!</p>
           <Link href="/">
-            <button className="mt-4 bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full font-semibold hover:bg-[#D6CFB4] hover:text-darkText duration-300">
+            <button className="bg-darkText font-bold text-white hover:text-darkText py-2 px-6 rounded-md hover:bg-[#D6CFB4] duration-200 mt-4">
               Continue Shopping
             </button>
           </Link>

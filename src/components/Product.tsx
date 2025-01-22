@@ -13,9 +13,9 @@ export default async function Product() {
     const bedsheet: IProduct[] = await getBedsheet()
 
     return (
-        <div id="products">
+        <div>
             <Container>
-                <h2 className="md:text-6xl text-4xl text-darkText my-4 text-center font-semibold font-logo">
+                <h2 id="products" className="md:text-6xl text-4xl text-darkText my-4 text-center font-semibold font-logo">
                 Season&apos;s Best Picks
                 </h2>
                 <ProductsData

@@ -94,7 +94,7 @@ const ProductsData = ({ lawn, cotton, khaddar, embroided, chickenKari, linen, be
           {options.map(option => (
             <div
               key={option.id}
-              className={`text-md md:text-lg ${selectedOption === option.id ? 'text-darkText font-bold underline decoration-2 underline-offset-4 decoration-darkText' : 'text-darkText font-semibold'}`}
+              className={`text-md md:text-lg lg:text-xl ${selectedOption === option.id ? 'text-darkText font-bold underline decoration-2 underline-offset-4 decoration-darkText' : 'text-darkText font-semibold'}`}
               onClick={() => handleOptionSelect(option.id)}
             >
               {option.label}
