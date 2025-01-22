@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Layout from "@/components/Layout";
 import "slick-carousel/slick/slick.css";
 import Footer from "@/components/Footer";
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: "Al Wahab",
@@ -23,6 +24,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      {/* Google tag (gtag.js) */}
+      <head>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-3EFFGY7S8X" />
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-3EFFGY7S8X');
+          `}
+        </Script>
+      </head>
+
       <body className="font-bodyFont w-full bg-main-bg text-darkText">
         <Layout>
           <Header />
