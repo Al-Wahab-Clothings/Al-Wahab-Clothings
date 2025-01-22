@@ -1,14 +1,14 @@
 import { defineType } from "sanity"
 
-export const linen = defineType({
-    name: "linen",
+export const cotton = defineType({
+    name: "cotton",
     type: "document",
-    title: "Linen",
+    title: "Cotton",
     fields: [
         {
             name: "id",
             type: "string",
-            title: "ID --> starts with 'li' (Must be Unique)",
+            title: "ID --> starts with 'c' (Must be Unique)",
         },
         {
             name: "title",

@@ -8,7 +8,7 @@ export const chickenKari = defineType({
         {
             name: "id",
             type: "string",
-            title: "ID -- starts with 'c' (Must be Unique)",
+            title: "ID --> starts with 'ck' (Must be Unique)",
         },
         {
             name: "title",

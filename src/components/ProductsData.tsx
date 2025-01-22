@@ -5,14 +5,16 @@ import Slider from "react-slick";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import ProductsCard from "./ProductsCard";
 
-const ProductsData = ({ lawn, embroided, linen, chickenKari, khaddar }: any) => {
+const ProductsData = ({ lawn, cotton, khaddar, embroided, chickenKari, linen, bedsheet }: any) => {
   const [selectedOption, setSelectedOption] = useState("lawn"); // default
   const options = [
     { id: "lawn", label: "Lawn", data: lawn },
-    { id: "embroided", label: "Embroided", data: embroided },
-    { id: "linen", label: "Linen", data: linen },
-    { id: "chickenKari", label: "Chicken Kari", data: chickenKari },
+    { id: "cotton", label: "cotton", data: cotton },
     { id: "khaddar", label: "Khaddar", data: khaddar },
+    { id: "embroided", label: "Embroided", data: embroided },
+    { id: "chickenKari", label: "Chicken Kari", data: chickenKari },
+    { id: "linen", label: "Linen", data: linen },
+    { id: "bedsheet", label: "bedsheet", data: bedsheet },
   ];
 
   // Function to handle selection of option

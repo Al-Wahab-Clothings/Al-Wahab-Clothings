@@ -16,6 +16,22 @@ export const getLawn = async () => {
   }`)
   return res
 }
+export const getCotton = async () => {
+  const res = await client.fetch(`*[_type=="cotton"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
+  }`)
+  return res
+}
 
 export const getEmbroided = async () => {
   const res = await client.fetch(`*[_type=="embroided"] {
@@ -84,9 +100,25 @@ export const getKhaddar = async () => {
   }`)
   return res
 }
+export const getBedsheet = async () => {
+  const res = await client.fetch(`*[_type=="bedsheet"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
+  }`)
+  return res
+}
 
 export const getTrendingProduct = async () => {
-  const res = await client.fetch(`*[_type in ["lawn", "embroided", "linen", "chickenKari", "khaddar"] && isTrending == true] {
+  const res = await client.fetch(`*[_type in ["lawn", "cotton", "khaddar", "embroided", "chickenKari", "linen", "bedsheet"] && isTrending == true] {
     id,
     title,
     isNew,
@@ -110,7 +142,7 @@ export const calculatePercentage = (oldPrice: any, price: any) => {
 };
 
 export const getSingleProduct = async (_id: string) => {
-  const query = `*[_type in ["lawn", "embroided", "linen", "chickenKari", "khaddar"] && id == $_id]{
+  const query = `*[_type in ["lawn", "cotton", "khaddar", "embroided", "chickenKari", "linen", "bedsheet"] && id == $_id]{
     id,
     title,
     isNew,
