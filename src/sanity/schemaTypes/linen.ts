@@ -1,9 +1,9 @@
 import { defineType } from "sanity"
 
-export const lawn = defineType({
-    name: "lawn",
+export const linen = defineType({
+    name: "linen",
     type: "document",
-    title: "Lawn",
+    title: "Linen",
     fields: [
         {
             name: "id",

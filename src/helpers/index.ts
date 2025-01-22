@@ -34,6 +34,23 @@ export const getEmbroided = async () => {
   return res
 }
 
+export const getLinen = async () => {
+  const res = await client.fetch(`*[_type=="linen"] {
+    id,
+    title,
+    isNew,
+    isTrending,
+    oldPrice,
+    price,
+    rating,
+    quantity,
+    description,
+    image,
+    brand
+  }`)
+  return res
+}
+
 export const getChickenKari = async () => {
   const res = await client.fetch(`*[_type=="chickenKari"] {
     id,
@@ -93,7 +110,7 @@ export const calculatePercentage = (oldPrice: any, price: any) => {
 };
 
 export const getSingleProduct = async (_id: string) => {
-  const query = `*[_type in ["lawn", "embroidered", "chickenKari", "khaddar"] && id == $_id]{
+  const query = `*[_type in ["lawn", "embroided", "linen", "chickenKari", "khaddar"] && id == $_id]{
     id,
     title,
     isNew,
@@ -105,7 +122,7 @@ export const getSingleProduct = async (_id: string) => {
     description,
     image,
     brand
-      }[0]`
+    }[0]`
   const result = await client.fetch(query, { _id });
   return result;
 };

@@ -68,14 +68,14 @@ const SingleProduct = ({ product }: any) => {
           </p>
         </div>
         <p className="text-darkText opacity-80">
-        {product?.description && RenderDescription(product?.description)}
+          {product?.description && RenderDescription(product?.description)}
         </p>
         <div className="text-sm text-darkText flex flex-col">
           <span>
-            SKU: <span className="text-darkText">{product?.id}</span>
+            Brand: <span className="text-darkText font-bold">{product?.brand}</span>
           </span>
           <span>
-            Brand: <span className="text-darkText font-bold">{product?.brand.name}</span>
+            SKU: <span className="text-darkText">{product?.id}</span>
           </span>
         </div>
         <div className="flex sm:flex-row items-center sm:justify-between justify-items-center flex-col">
@@ -92,7 +92,7 @@ const SingleProduct = ({ product }: any) => {
           </div>
           <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
             <div
-              className="flex sm:flex-row-reverse items-center cursor-pointer group mt-2 sm:mt-0"
+              className="flex sm:flex-row-reverse items-center cursor-pointer group mt-2 sm:mt-0 mr-4 md:mr-1 lg:mr-6"
             >
               <button className="bg-darkText text-slate-100 px-6 py-3 text-sm uppercase flex items-center border-r-[1px] border-r-slate-500 font-bold" >
                 WhatsApp
