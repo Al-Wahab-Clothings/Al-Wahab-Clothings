@@ -15,7 +15,7 @@ const PaymentForm = () => {
   const dispatch = useDispatch();
 
   const { userInfo }: any = useSelector(
-      (state: StateProps) => state.shopping
+    (state: StateProps) => state.shopping
   );
 
   const [totalAmt, setTotalAmt] = useState(0);
@@ -23,9 +23,9 @@ const PaymentForm = () => {
     let amt = 0;
     productData.map((item: Product) => {
       if (item.price) {
-      amt += (item.price || 0) * (item.quantity || 0);
-      return;
-    }});
+        amt += (item.price || 0) * (item.quantity || 0);
+      }
+    });
     setTotalAmt(amt);
   }, [productData]);
 
@@ -34,26 +34,52 @@ const PaymentForm = () => {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
   );
   const { data: session } = useSession();
+
   const handleCheckout = async () => {
     const stripe = await stripePromise;
+    const orderStatus = "pending"; // Set status to "pending" initially
+
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         items: productData,
         email: session?.user?.email,
+        status: orderStatus, // Add the status here
       }),
     });
+
     const data = await response.json();
 
     if (response.ok) {
-      dispatch(saveOrder({ order: productData, id: data.id }));
+      // Dispatch the order with status "pending"
+      dispatch(saveOrder({
+        order: productData,
+        id: data.id,
+        status: orderStatus,
+      }));
+
+      // Redirect to Stripe checkout
       stripe?.redirectToCheckout({ sessionId: data.id });
+
+      // Once payment is successful, update the order status to "paid"
+      // This can be done based on your callback or payment verification logic
+      // For now, assuming payment is successful after checkout:
+      dispatch(saveOrder({
+        order: productData,
+        id: data.id,
+        status: "paid", // Update the status to "paid"
+      }));
+
+      toast.success("Order created successfully and payment processed!");
     } else {
+      toast.error("Failed to create Stripe Payment");
       throw new Error("Failed to create Stripe Payment");
     }
   };
+
   // =============  Stripe Payment End here ================
+
   return (
     <div className="w-full bg-[#D6CFB4] p-4 font-medium">
       <h2 className="font-bold mb-4">Cart Totals</h2>
@@ -91,7 +117,10 @@ const PaymentForm = () => {
         </Button>
       ) : (
         <div>
-          <Button variant="destructive" className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold">
+          <Button
+            variant="destructive"
+            className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold"
+          >
             Proceed to checkout
           </Button>
           <p className="text-base mt-1 text-red-700 font-semibold animate-bounce">

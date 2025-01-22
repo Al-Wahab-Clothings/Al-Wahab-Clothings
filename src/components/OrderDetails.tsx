@@ -74,7 +74,7 @@ const OrderDetails = () => {
                     className="w-12 h-12 object-cover"
                   />
                   <div>
-                    <h3 className="text-base font-semibold">{item?.title}</h3>
+                    <h3 className="text-base font-semibold sm:block hidden">{item?.title}</h3>
                   </div>
                 </div>
                 <p className="text-center">{item?.quantity}</p>
@@ -89,12 +89,12 @@ const OrderDetails = () => {
             ))}
           </div>
           <div className="py-2 mt-4 border-b-[1px]">
-            <p>Payment Details</p>
+            <p>Shipment: <span className="font-semibold">PKR 200</span></p>
           </div>
           <p className="py-2">
             Total Paid:{" "}
             <span className="text-xl font-semibold">
-              <FormattedPrice amount={totalAmount} />
+              <FormattedPrice amount={totalAmount+200} />
             </span>
           </p>
           <Button

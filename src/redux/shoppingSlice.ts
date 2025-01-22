@@ -105,5 +105,6 @@ export const {
   saveOrder,
   resetOrder,
   setCartData,
+  updateOrderStatus
 } = shoppingSlice.actions;
 export default shoppingSlice.reducer;

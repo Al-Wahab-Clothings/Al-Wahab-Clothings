@@ -21,44 +21,52 @@ export async function GET(req: NextRequest) {
     }
 }
 
-// POST API to create a new order
+// POST API to create or update an order
 export async function POST(request: NextRequest) {
     const req = await request.json();
 
     try {
-        const existingOrder = await db.select()
-            .from(ordersTable)
-            .where(and(
-                eq(ordersTable.user_id, req.user_id),
-                eq(ordersTable.product_id, req.product_id),
-                eq(ordersTable.status, req.status || "pending")
-            ))
-            .then(result => result[0]); // Get the first item from the result array
-
         let res;
-        if (existingOrder) {
-            // Update the quantity if the product already exists in the pending order
-            res = await db.update(ordersTable)
-                .set({ quantity: existingOrder.quantity + (req.quantity || 1) })
+        if (req.status === "pending") {
+            // Handle order creation when status is 'pending'
+            const existingOrder = await db.select()
+                .from(ordersTable)
                 .where(and(
                     eq(ordersTable.user_id, req.user_id),
                     eq(ordersTable.product_id, req.product_id),
-                    eq(ordersTable.status, req.status || "pending")
+                    eq(ordersTable.status, req.status)
                 ))
+                .then(result => result[0]); // Get the first item from the result array
+
+            if (existingOrder) {
+                // Update the quantity if the product already exists in the pending order
+                res = await db.update(ordersTable)
+                    .set({ quantity: existingOrder.quantity + (req.quantity || 1) })
+                    .where(and(
+                        eq(ordersTable.user_id, req.user_id),
+                        eq(ordersTable.product_id, req.product_id),
+                        eq(ordersTable.status, req.status)
+                    ))
+                    .returning();
+            } else {
+                // Insert a new order entry with 'pending' status
+                res = await db.insert(ordersTable).values({
+                    product_id: req.product_id,
+                    quantity: req.quantity || 1,
+                    user_id: req.user_id,
+                    username: req.username,
+                    status: req.status || "pending" // Default status for new orders
+                }).returning();
+            }
+        } else if (req.status === "paid") {
+            // Handle updating the status to 'paid'
+            res = await db.update(ordersTable)
+                .set({ status: "paid" })
+                .where(eq(ordersTable.id, req.orderId))
                 .returning();
-        } else {
-            // Insert a new order entry
-            res = await db.insert(ordersTable).values({
-                product_id: req.product_id,
-                quantity: req.quantity || 1,
-                user_id: req.user_id,
-                username: req.username,
-                status: req.status || "pending" // Default status for new orders
-            }).returning();
         }
 
         return NextResponse.json({ res });
-
     } catch (error) {
         console.log("error:", (error as { message: string }).message);
         return NextResponse.json({ error });
@@ -74,7 +82,10 @@ export async function DELETE(request: NextRequest) {
         if (req.order_id) {
             // Delete a specific order by order_id
             response = await db.delete(ordersTable)
-                .where(eq(ordersTable.id, req.order_id))
+                .where(and(
+                    eq(ordersTable.id, req.order_id),
+                    eq(ordersTable.user_id, req.user_id)
+                ))
                 .returning();
         } else {
             // Delete all orders for the user
