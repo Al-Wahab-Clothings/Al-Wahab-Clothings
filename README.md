@@ -73,7 +73,7 @@ Admin interface for adding, updating, or managing product data.
 7. npm i stripe
 8. npx shadcn-ui@latest init
 9. npx shadcn-ui@latest add button
-10. npm create sanity@latest -- --project 6605qrxk --dataset production --template clean  
+10. npm create sanity@latest -- --project 6605qrxk --dataset production --template clean 
 11. npm install --save-dev @types/is-hotkey
 12. npm i react-hot-toast
 13. npm install @reduxjs/toolkit react-redux
