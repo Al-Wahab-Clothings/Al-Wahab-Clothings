@@ -86,7 +86,7 @@ export const getKhaddar = async () => {
 }
 
 export const getTrendingProduct = async () => {
-  const res = await client.fetch(`*[_type in ["lawn", "embroided", "linen" "chickenKari", "khaddar"] && isTrending == true] {
+  const res = await client.fetch(`*[_type in ["lawn", "embroided", "linen", "chickenKari", "khaddar"] && isTrending == true] {
     id,
     title,
     isNew,
