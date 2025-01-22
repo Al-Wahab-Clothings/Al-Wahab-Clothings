@@ -9,7 +9,7 @@ const ProductsData = ({ lawn, cotton, khaddar, embroided, chickenKari, linen, be
   const [selectedOption, setSelectedOption] = useState("lawn"); // default
   const options = [
     { id: "lawn", label: "Lawn", data: lawn },
-    { id: "cotton", label: "cotton", data: cotton },
+    { id: "cotton", label: "Cotton", data: cotton },
     { id: "khaddar", label: "Khaddar", data: khaddar },
     { id: "embroided", label: "Embroided", data: embroided },
     { id: "chickenKari", label: "Chicken Kari", data: chickenKari },
