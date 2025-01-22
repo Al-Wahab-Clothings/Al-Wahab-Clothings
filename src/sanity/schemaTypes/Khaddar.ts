@@ -8,7 +8,7 @@ export const khaddar = defineType({
         {
             name: "id",
             type: "string",
-            title: "ID (Must be Unique)",
+            title: "ID -- starts with 'k' (Must be Unique)",
         },
         {
             name: "title",

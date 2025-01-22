@@ -8,7 +8,7 @@ export const lawn = defineType({
         {
             name: "id",
             type: "string",
-            title: "ID (Must be Unique)",
+            title: "ID -- starts with 'l' (Must be Unique)",
         },
         {
             name: "title",

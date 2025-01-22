@@ -8,7 +8,7 @@ export const linen = defineType({
         {
             name: "id",
             type: "string",
-            title: "ID (Must be Unique)",
+            title: "ID -- starts with 'li' (Must be Unique)",
         },
         {
             name: "title",

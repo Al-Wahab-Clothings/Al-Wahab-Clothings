@@ -61,11 +61,16 @@ Admin interface for adding, updating, or managing product data.
 
 * **is-hotkey:** Keyboard shortcuts handling.
 
+## 7. Google Analytics
+
+* **Google Analytics 4 (GA4):** Integrated to track and analyze user interactions with the website, monitor traffic, conversions, and overall website performance.
+
+
 # Installtions
 
 ```bash
 1. npm install react-icons
-2. npm install next-auth
+2. npm install next*-auth
 3. npm i react-slick
 4. npm i --save-dev @types/react-slick
 5. npm install slick-carousel

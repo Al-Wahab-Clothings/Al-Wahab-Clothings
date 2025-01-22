@@ -8,7 +8,7 @@ export const embroided = defineType({
         {
             name: "id",
             type: "string",
-            title: "ID (Must be Unique)",
+            title: "ID -- starts with 'e' (Must be Unique)",
         },
         {
             name: "title",
