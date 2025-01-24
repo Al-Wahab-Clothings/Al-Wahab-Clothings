@@ -87,8 +87,8 @@ const OrderDetails = ({ item }: any) => {
       {orderData?.length > 0 ? (
         <div>
           <h2 className="font-bold text-5xl -mt-10 mb-4 font-logo text-darkText">Your Orders</h2>
-          <div className="grid sm:grid-cols-6 grid-cols-4 uppercase text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300">
-            <p className="sm:col-span-3 justify-center">Items</p>
+          <div className="grid sm:grid-cols-6 grid-cols-4 text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300">
+            <p className="sm:col-span-3 justify-center uppercase">Items</p>
             <p className="hidden md:block text-center">Quantity</p>
             <p className="block md:hidden text-center">Qty.</p>
             <p className="hidden md:block text-center">Amount</p>

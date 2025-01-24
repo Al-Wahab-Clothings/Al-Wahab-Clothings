@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { resetCart, saveOrder } from "@/redux/shoppingSlice";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
+import { FaArrowUp } from "react-icons/fa";
 
 const PaymentForm = () => {
   const { productData } = useSelector((state: StateProps) => state?.shopping);
@@ -153,11 +154,11 @@ const PaymentForm = () => {
     if (validateForm()) {
       const orderPayment = "COD";
       try {
-        const orderData = await handleAddOrders(productData, userInfo, session, orderPayment);
+        await handleAddOrders(productData, userInfo, session, orderPayment);
         await handleResetCart();
 
         // Redirect using window.location.href
-        window.location.href = `/order`;  // Redirects to the order page
+        window.location.href = `/success`;  // Redirects to the order page
 
       } catch (error) {
         console.error("Error placing order:", error);
@@ -231,13 +232,18 @@ const PaymentForm = () => {
               />
               {formErrors.phone && <p className="text-red-500 text-xs">{formErrors.phone}</p>}
             </div>
-            <Button type="submit" className="font-bold bg-darkText text-[#D6CFB4] mt-4 py-3 px-6">
-              Submit Order
-            </Button>
+            <div className="flex justify-between items-center">
+              <Button type="submit" className="font-bold bg-darkText text-[#D6CFB4] mt-4 py-3 px-6">
+                Submit Order
+              </Button>
+              <Button onClick={() => setShowForm(false)} className="font-bold text-darkText mt-4 -mr-3">
+                <FaArrowUp size={15} />
+              </Button>
+            </div>
           </form>
         ) : (
           <div>
-            <p>Fill in your details below:</p>
+            <p className="mt-2 font-sans font-normal opacity-70 animate-bounce">Fill in your details below:</p>
             <Button
               onClick={() => setShowForm(true)}
               className="font-bold bg-darkText text-[#D6CFB4] py-3 px-6 mt-4"
@@ -247,7 +253,14 @@ const PaymentForm = () => {
           </div>
         )
       ) : (
-        <p className="font-semibold">You must be logged in to place an order.</p>
+        <div>
+          <Button variant="destructive" className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold">
+            Proceed to checkout
+          </Button>
+          <p className="text-base mt-1 text-red-500 font-semibold animate-bounce">
+            Please login to continue
+          </p>
+        </div>
       )}
     </div>
   );
