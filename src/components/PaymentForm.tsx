@@ -1,5 +1,6 @@
 "use client";
 
+import emailjs from "@emailjs/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { Product, StateProps } from "../type";
 import FormattedPrice from "./FormattedPrice";
@@ -149,6 +150,39 @@ const PaymentForm = () => {
     }
   };
 
+  const handleSendEmail = async() => {
+    // Send email to the customer
+    const customerEmailParams = {
+      to_email: userInfo.email,  // Ensure you have the customer's email
+      customer_name: session?.user?.name || "Customer",
+      order_items: productData.map((item:any) => `${item.title} (x${item.quantity})`).join(", "),
+      total_price: totalAmt + 200,  // Total price (including shipping)
+    };
+
+    await emailjs.send(
+      `${process.env.GMAIL_SERVICE_ID}`, // Your EmailJS service ID
+      `${process.env.GMAIL_TEMPLATE_ID}`, // Your EmailJS template ID for customer order
+      customerEmailParams,
+      'YOUR_USER_ID' // Your EmailJS user ID
+    );
+
+    // Send email to the store (your email)
+    const storeEmailParams = {
+      to_email: 'your-email@example.com',  // Your store email
+      customer_name: session?.user?.name || "Customer",
+      order_items: productData.map((item:any) => `${item.title} (x${item.quantity})`).join(", "),
+      total_price: totalAmt + 200,
+      customer_email: userInfo.email,  // Customer's email
+    };
+
+    await emailjs.send(
+      'YOUR_SERVICE_ID', // Your EmailJS service ID
+      'YOUR_TEMPLATE_ID', // Your EmailJS template ID for store notification
+      storeEmailParams,
+      'YOUR_USER_ID' // Your EmailJS user ID
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
@@ -159,6 +193,8 @@ const PaymentForm = () => {
 
         // Redirect using window.location.href
         window.location.href = `/success`;  // Redirects to the order page
+
+        await handleSendEmail()
 
       } catch (error) {
         console.error("Error placing order:", error);

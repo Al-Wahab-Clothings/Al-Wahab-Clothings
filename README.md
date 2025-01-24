@@ -93,4 +93,5 @@ Admin interface for adding, updating, or managing product data.
 21. npm install @neondatabase/serverless
 22. npm install postgres
 23. npm install @portabletext/react
+24. npm install @emailjs/browser
 ```
