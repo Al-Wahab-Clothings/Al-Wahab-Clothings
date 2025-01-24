@@ -34,6 +34,7 @@ export interface Order {
   price: number;
   image: IImage;
   orderId: string;
+  product_id: string;
   product: Product;
   quantity: number;
   payment: string;

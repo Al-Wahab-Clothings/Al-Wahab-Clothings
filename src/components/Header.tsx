@@ -18,9 +18,11 @@ import { BiDotsVerticalRounded } from "react-icons/bi"; // Import 3-dots icon
 const Header = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const { productData, orderData } = useSelector(
+  const { productData } = useSelector(
     (state: StateProps) => state.shopping
   );
+
+  const orderData = useSelector((state: StateProps) => state.shopping.orderData);
 
   useEffect(() => {
     if (session) {

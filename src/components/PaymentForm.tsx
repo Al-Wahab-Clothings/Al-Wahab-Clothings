@@ -3,8 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Product, StateProps } from "../type";
 import FormattedPrice from "./FormattedPrice";
-import { useEffect, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { useEffect, useState } from "react";;
 import { useSession } from "next-auth/react";
 import { resetCart, saveOrder } from "@/redux/shoppingSlice";
 import { Button } from "./ui/button";
@@ -18,6 +17,10 @@ const PaymentForm = () => {
     (state: StateProps) => state.shopping
   );
 
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ name: "", address: "", phone: "" });
+  const [formErrors, setFormErrors] = useState({ name: "", address: "", phone: "" });
+
   const [totalAmt, setTotalAmt] = useState(0);
   useEffect(() => {
     let amt = 0;
@@ -28,6 +31,30 @@ const PaymentForm = () => {
     });
     setTotalAmt(amt);
   }, [productData]);
+
+  const { data: session } = useSession();
+
+  const validateForm = () => {
+    const errors: any = {};
+
+    // Name validation: Must contain only letters
+    if (!formData.name || !/^[a-zA-Z ]+$/.test(formData.name)) {
+      errors.name = "Name must contain only letters and spaces.";
+    }
+
+    // Address validation: Must not be empty and not just a number
+    if (!formData.address || !isNaN(Number(formData.address))) {
+      errors.address = "Address must be a valid string.";
+    }
+
+    // Phone validation: Must contain only digits and have at least 10 digits
+    if (!formData.phone || !/^\d{10,}$/.test(formData.phone)) {
+      errors.phone = "Phone number must be at least 10 digits long and contain only numbers.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // returns true if no errors
+  };
 
   const handleResetCart = async () => {
     try {
@@ -77,7 +104,6 @@ const PaymentForm = () => {
           product_id: item.id, // Make sure product_id is correctly populated
           quantity: item.quantity || 1,
           price: item.price,
-          description: item.description,
           title: item.title,
         };
       });
@@ -90,7 +116,7 @@ const PaymentForm = () => {
           items: orderItems, // Includes product_id for each item
           user_id: userInfo ? userInfo.unique_id : "Anonymous",
           username: session?.user?.name || userInfo?.username || "Anonymous",
-          payment: payment, // "pending" or "paid"
+          payment: payment, // "COD" or "paid"
         }),
       });
 
@@ -110,9 +136,9 @@ const PaymentForm = () => {
       // Dispatch the saveOrder action to Redux
       dispatch(saveOrder({ order: productData, id: orderId }));
 
-      // Optionally, redirect or notify the user
-      toast.success("Order added successfully!");
-      console.log("Order added successfully:", orderData);
+      // Optionally, notify the user
+      toast.success("Order placed successfully!");
+      console.log("Order placed successfully:", orderData);
 
       return orderData.res; // Return the orderData (e.g., for further processing)
 
@@ -122,57 +148,25 @@ const PaymentForm = () => {
     }
   };
 
-  // =============  Stripe Payment Start here ==============
-  const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-  );
-  const { data: session } = useSession();
-
-  const handleCheckout = async () => {
-    const stripe = await stripePromise;
-
-    if (!stripe) {
-      toast.error("Stripe failed to load");
-      return;
-    }
-
-    try {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
       const orderPayment = "COD";
-      const orderData = await handleAddOrders(productData, userInfo, session, orderPayment);
+      try {
+        const orderData = await handleAddOrders(productData, userInfo, session, orderPayment);
+        await handleResetCart();
 
-      if (!orderData) {
-        throw new Error("Order creation failed");
+        // Redirect using window.location.href
+        window.location.href = `/order`;  // Redirects to the order page
+
+      } catch (error) {
+        console.error("Error placing order:", error);
+        toast.error("An error occurred while placing your order.");
       }
-
-      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/checkout`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: productData,
-          email: session?.user?.email,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        dispatch(saveOrder({ order: productData, id: data.id }));
-
-        const result = await stripe?.redirectToCheckout({ sessionId: data.id });
-        if (result?.error) {
-          console.error("Stripe redirection error:", result.error.message ?? "Unknown error");
-          toast.error(result.error.message ?? "An error occurred during checkout");
-        }
-      } else {
-        console.error("Failed to create Stripe Payment:", data);
-        throw new Error(data.error || "Stripe payment failed");
-      }
-    } catch (error) {
-      console.error("Error during checkout:", error);
+    } else {
+      toast.error("Please fix the errors in the form.");
     }
   };
-
-  // =============  Stripe Payment End here ================
 
   return (
     <div className="w-full bg-[#D6CFB4] p-4 font-medium">
@@ -202,25 +196,58 @@ const PaymentForm = () => {
         </div>
       </div>
       {userInfo ? (
-        <Button
-          variant="default"
-          onClick={handleCheckout}
-          className="font-bold bg-darkText text-[#D6CFB4] mt-4 py-3 px-6 hover:bg-green-800 cursor-pointer duration-200"
-        >
-          Proceed to checkout
-        </Button>
+        showForm ? (
+          <form onSubmit={handleSubmit} className="mt-4">
+            <div className="mb-2">
+              <label className="block text-sm font-medium">Name</label>
+              <input
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              {formErrors.name && <p className="text-red-500 text-xs">{formErrors.name}</p>}
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium">Address</label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              {formErrors.address && <p className="text-red-500 text-xs">{formErrors.address}</p>}
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium">Phone</label>
+              <input
+                type="text"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              {formErrors.phone && <p className="text-red-500 text-xs">{formErrors.phone}</p>}
+            </div>
+            <Button type="submit" className="font-bold bg-darkText text-[#D6CFB4] mt-4 py-3 px-6">
+              Submit Order
+            </Button>
+          </form>
+        ) : (
+          <div>
+            <p>Fill in your details below:</p>
+            <Button
+              onClick={() => setShowForm(true)}
+              className="font-bold bg-darkText text-[#D6CFB4] py-3 px-6 mt-4"
+            >
+              Proceed to Checkout
+            </Button>
+          </div>
+        )
       ) : (
-        <div>
-          <Button
-            variant="destructive"
-            className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold"
-          >
-            Proceed to checkout
-          </Button>
-          <p className="text-base mt-1 text-red-700 font-semibold animate-bounce">
-            Please login to continue
-          </p>
-        </div>
+        <p className="font-semibold">You must be logged in to place an order.</p>
       )}
     </div>
   );
