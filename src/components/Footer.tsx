@@ -49,7 +49,7 @@ const Footer = () => {
               className="cursor-pointer hover:animate-slowspin"
             />
             <Link href="https://ridanaz-portfolio.vercel.app/">
-              <h3 className="text-2xl font-logo">Rida Naz</h3>
+              <h3 className="text-2xl font-logo hover:scale-110">Rida Naz</h3>
             </Link>
           </div>
           <p className="mt-1 font-semibold text-center">Transforming ideas into impactful online solutions!</p>

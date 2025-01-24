@@ -8,16 +8,25 @@ export async function GET(req: NextRequest) {
 
     try {
         if (url.has("user_id")) {
-            const allOrdersData = await db.select().from(ordersTable).where(eq(ordersTable.user_id, url.get("user_id") as string));
+            const userId = url.get("user_id");
+            console.log("Fetching orders for user_id:", userId);
+
+            const allOrdersData = await db.select()
+                .from(ordersTable)
+                .where(eq(ordersTable.user_id, userId as string));
+
+            console.log("Fetched orders:", allOrdersData); // Log the data
+
             return NextResponse.json({ allOrdersData });
         } else {
-            // If no filter, return all orders
+            // Fetch all orders if no filter
             const allOrdersData = await db.select().from(ordersTable);
+            console.log("Fetched all orders:", allOrdersData); // Log the data
             return NextResponse.json({ allOrdersData });
         }
     } catch (error) {
-        console.log("error:", (error as { message: string }).message);
-        return NextResponse.json({ error });
+        console.error("Error fetching orders:", error);
+        return NextResponse.json({ error: "Failed to fetch orders." }, { status: 500 });
     }
 }
 
@@ -25,53 +34,57 @@ export async function GET(req: NextRequest) {
 export async function POST(request: NextRequest) {
     const req = await request.json();
 
+    console.log("Received request data:", req); // Log the request to see the incoming data
+
     try {
-        let res;
-        if (req.status === "pending") {
-            // Handle order creation when status is 'pending'
+        const results = [];
+
+        for (const item of req.items) {
             const existingOrder = await db.select()
                 .from(ordersTable)
                 .where(and(
                     eq(ordersTable.user_id, req.user_id),
-                    eq(ordersTable.product_id, req.product_id),
-                    eq(ordersTable.status, req.status)
+                    eq(ordersTable.product_id, item.product_id) // Use only user_id and product_id to identify the order
                 ))
                 .then(result => result[0]); // Get the first item from the result array
 
+            let res;
+
             if (existingOrder) {
-                // Update the quantity if the product already exists in the pending order
+                // Update the quantity for the existing product in the order
                 res = await db.update(ordersTable)
-                    .set({ quantity: existingOrder.quantity + (req.quantity || 1) })
+                    .set({
+                        quantity: existingOrder.quantity + (item.quantity || 1), // Increment quantity
+                    })
                     .where(and(
                         eq(ordersTable.user_id, req.user_id),
-                        eq(ordersTable.product_id, req.product_id),
-                        eq(ordersTable.status, req.status)
+                        eq(ordersTable.product_id, item.product_id) // Update based on user_id and product_id
                     ))
                     .returning();
             } else {
-                // Insert a new order entry with 'pending' status
+                // Insert a new order entry
                 res = await db.insert(ordersTable).values({
-                    product_id: req.product_id,
-                    quantity: req.quantity || 1,
+                    product_id: item.product_id,
+                    title: item.title || "Untitled", // Ensure a default title if none is provided
+                    quantity: item.quantity || 1, // Default quantity to 1
+                    unit_price: item.price, // Use the price from the request
                     user_id: req.user_id,
                     username: req.username,
-                    status: req.status || "pending" // Default status for new orders
+                    payment: req.payment || "COD" // Default to Cash on Delivery (COD)
                 }).returning();
             }
-        } else if (req.status === "paid") {
-            // Handle updating the status to 'paid'
-            res = await db.update(ordersTable)
-                .set({ status: "paid" })
-                .where(eq(ordersTable.id, req.orderId))
-                .returning();
+
+            results.push(res);
         }
 
-        return NextResponse.json({ res });
+        return NextResponse.json({ results });
     } catch (error) {
-        console.log("error:", (error as { message: string }).message);
-        return NextResponse.json({ error });
+        console.error("Error in POST API:", error);
+        return NextResponse.json({ error: "error"}, { status: 500 });
     }
 }
+
+
 
 // DELETE API to delete an order (specific or all by user_id)
 export async function DELETE(request: NextRequest) {
@@ -98,38 +111,6 @@ export async function DELETE(request: NextRequest) {
 
     } catch (error) {
         console.log("error:", (error as { message: string }).message);
-        return NextResponse.json({ error: (error as { message: string }).message }, { status: 500 });
-    }
-}
-
-// PUT API to update the order details (like quantity or status)
-export async function PUT(request: NextRequest) {
-    const req = await request.json();
-
-    try {
-        let updateData: any = {};
-
-        if (req.quantity) {
-            updateData.quantity = req.quantity;
-        }
-
-        if (req.status) {
-            updateData.status = req.status;
-        }
-
-        // Update the order based on user_id and product_id (can also include order_id for more specific updates)
-        const response = await db.update(ordersTable)
-            .set(updateData)
-            .where(and(
-                eq(ordersTable.user_id, req.user_id),
-                eq(ordersTable.product_id, req.product_id)
-            ))
-            .returning();
-
-        return NextResponse.json({ response });
-
-    } catch (error) {
-        console.log("Error during PUT operation:", (error as { message: string }).message);
         return NextResponse.json({ error: (error as { message: string }).message }, { status: 500 });
     }
 }

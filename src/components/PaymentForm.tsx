@@ -24,11 +24,103 @@ const PaymentForm = () => {
     productData.map((item: Product) => {
       if (item.price) {
         amt += (item.price || 0) * (item.quantity || 0);
-        return;
       }
     });
     setTotalAmt(amt);
   }, [productData]);
+
+  const handleResetCart = async () => {
+    try {
+      const res = await fetch("/api/postgres", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: userInfo ? userInfo.unique_id : "Anonymous",
+        }),
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        console.error("Error response from server:", error);
+        throw new Error(error.message || "Failed to reset cart.");
+      }
+
+      const result = await res.json();
+      console.log("Reset cart response:", result);
+
+      dispatch(resetCart());
+      toast.success("Cart reset successfully!");
+    } catch (error) {
+      console.error("Error resetting cart:", error);
+      toast.error(`An error occurred: ${(error as Error).message}`);
+    }
+  };
+
+  const handleAddOrders = async (
+    productData: Product[],
+    userInfo: any,
+    session: any,
+    payment: string
+  ) => {
+    try {
+      // Construct the order data
+      const orderItems = productData.map((item) => {
+        // Make sure item.id exists and is valid
+        if (!item.id) {
+          throw new Error(`Product ID is missing for product: ${item.title}`);
+        }
+        console.log("Product Data:", productData);  // Check if product_id exists for each item
+
+        return {
+          product_id: item.id, // Make sure product_id is correctly populated
+          quantity: item.quantity || 1,
+          price: item.price,
+          description: item.description,
+          title: item.title,
+        };
+      });
+
+      // Send POST request to create or update the order
+      const createOrderResponse = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: orderItems, // Includes product_id for each item
+          user_id: userInfo ? userInfo.unique_id : "Anonymous",
+          username: session?.user?.name || userInfo?.username || "Anonymous",
+          payment: payment, // "pending" or "paid"
+        }),
+      });
+
+      const orderData = await createOrderResponse.json();
+
+      console.log("Order Data Response:", orderData);
+
+      if (!createOrderResponse.ok || !orderData.res) {
+        toast.error("Failed to create order");
+        console.error("Error response from /api/orders:", orderData);
+        return;
+      }
+
+      // Assuming orderData contains the order ID after successful creation
+      const { id: orderId } = orderData.res;
+
+      // Dispatch the saveOrder action to Redux
+      dispatch(saveOrder({ order: productData, id: orderId }));
+
+      // Optionally, redirect or notify the user
+      toast.success("Order added successfully!");
+      console.log("Order added successfully:", orderData);
+
+      return orderData.res; // Return the orderData (e.g., for further processing)
+
+    } catch (error) {
+      console.error("Error during order creation:", error);
+      toast.error("An error occurred while adding the order.");
+    }
+  };
 
   // =============  Stripe Payment Start here ==============
   const stripePromise = loadStripe(
@@ -38,44 +130,45 @@ const PaymentForm = () => {
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
-    const orderStatus = "pending"; // Set status to "pending" initially
 
-    const response = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        items: productData,
-        email: session?.user?.email,
-        status: orderStatus, // Add the status here
-      }),
-    });
+    if (!stripe) {
+      toast.error("Stripe failed to load");
+      return;
+    }
 
-    const data = await response.json();
+    try {
+      const orderPayment = "COD";
+      const orderData = await handleAddOrders(productData, userInfo, session, orderPayment);
 
-    if (response.ok) {
-      // Dispatch the order with status "pending"
-      dispatch(saveOrder({
-        order: productData,
-        id: data.id,
-        status: orderStatus,
-      }));
+      if (!orderData) {
+        throw new Error("Order creation failed");
+      }
 
-      // Redirect to Stripe checkout
-      stripe?.redirectToCheckout({ sessionId: data.id });
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/checkout`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items: productData,
+          email: session?.user?.email,
+        }),
+      });
 
-      // Once payment is successful, update the order status to "paid"
-      // This can be done based on your callback or payment verification logic
-      // For now, assuming payment is successful after checkout:
-      dispatch(saveOrder({
-        order: productData,
-        id: data.id,
-        status: "paid", // Update the status to "paid"
-      }));
+      const data = await response.json();
 
-      toast.success("Order created successfully and payment processed!");
-    } else {
-      toast.error("Failed to create Stripe Payment");
-      throw new Error("Failed to create Stripe Payment");
+      if (response.ok) {
+        dispatch(saveOrder({ order: productData, id: data.id }));
+
+        const result = await stripe?.redirectToCheckout({ sessionId: data.id });
+        if (result?.error) {
+          console.error("Stripe redirection error:", result.error.message ?? "Unknown error");
+          toast.error(result.error.message ?? "An error occurred during checkout");
+        }
+      } else {
+        console.error("Failed to create Stripe Payment:", data);
+        throw new Error(data.error || "Stripe payment failed");
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error);
     }
   };
 

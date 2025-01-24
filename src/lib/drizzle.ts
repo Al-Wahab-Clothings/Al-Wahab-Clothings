@@ -22,6 +22,9 @@ export const ordersTable = pgTable("orders", {
     user_id: varchar("user_id", {
         length: 255
     }).notNull(),
+    title: varchar("title", {
+        length: 255
+    }).notNull(),
     username: varchar("username", {
         length: 255
     }),
@@ -29,9 +32,10 @@ export const ordersTable = pgTable("orders", {
         length: 255
     }).notNull(), // Product ID
     quantity: integer("quantity").notNull(),
-    status: varchar("status", {
+    payment: varchar("payment", {
         length: 50
-    }).default("pending").notNull() // Order status: "pending" or "paid"
+    }).default("COD").notNull(), // Order payment: "COD" or "paid"
+    unit_price: integer("unit_price")
 });
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -47,23 +51,3 @@ export const getOrders = async () => {
     const selectResult = await db.select().from(ordersTable);
     console.log("Orders:", selectResult);
 };
-
-// // Example of database interaction function
-// export const updateOrderStatus = async (orderId: string, status: string) => {
-//     try {
-//       // Assuming you are using Neon HTTP database client
-//       const db = new NeonHttpDatabase<Record<string, never>>(); // Ensure the proper initialization here
-  
-//       // Query the 'orders' table to update the status
-//       const response = await db
-//         .table("orders")
-//         .update({ status }) 
-//         .where("orderId", orderId) 
-//         .execute(); 
-  
-//       return response;
-//     } catch (error) {
-//       console.error("Error updating order status:", error);
-//       throw new Error("Unable to update order status.");
-//     }
-//   };

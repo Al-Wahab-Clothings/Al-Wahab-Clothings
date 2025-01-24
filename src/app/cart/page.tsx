@@ -4,7 +4,7 @@ import Container from "@/components/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { StateProps } from "../../type";
 import CartItem from "@/components/CartItem";
-import { resetCart, setCartData } from "@/redux/shoppingSlice";
+import { resetCart } from "@/redux/shoppingSlice";
 import PaymentForm from "@/components/PaymentForm";
 import { Button } from "@/components/ui/button"
 import Link from "next/link";

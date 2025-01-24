@@ -36,16 +36,15 @@ export interface Order {
   orderId: string;
   product: Product;
   quantity: number;
-  status: string; 
+  payment: string;
+  unit_price: number 
 }
 
 export interface StateProps {
   shopping: {
     productData: [];
     userInfo: {};
-    orderData: {
-      orders: Order[];
-    };
+    orderData: Order[];
   };
   user: {
     userId: null | string | number,

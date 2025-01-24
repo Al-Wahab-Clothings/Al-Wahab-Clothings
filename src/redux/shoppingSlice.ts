@@ -1,4 +1,4 @@
-import { Product } from "@/type";
+import { Order, Product } from "@/type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
@@ -6,13 +6,6 @@ interface User {
   email: string
   image: string
   unique_id: number
-}
-
-interface Order {
-  order: Product[]; // Or any structure your order uses
-  orderId: string; // Example of additional properties in an order
-  totalPrice: number;
-  status: string;
 }
 
 interface StoreState {
@@ -78,18 +71,14 @@ export const shoppingSlice = createSlice({
     deleteUser: (state) => {
       state.userInfo = null;
     },
+    setOrderData: (state, action: PayloadAction<Order[]>) => {
+      state.orderData = action.payload;
+    },
     saveOrder: (state, action) => {
       state.orderData = action.payload;
     },
     resetOrder: (state) => {
       state.orderData = [];
-    },
-    updateOrderStatus: (state, action: PayloadAction<{ orderId: string; status: string }>) => {
-      const { orderId, status } = action.payload;
-      const order = state.orderData.find((o) => o.orderId === orderId);
-      if (order) {
-        order.status = status;
-      }
     },
   },
 });
@@ -102,9 +91,9 @@ export const {
   resetCart,
   addUser,
   deleteUser,
+  setOrderData,
   saveOrder,
   resetOrder,
   setCartData,
-  updateOrderStatus
 } = shoppingSlice.actions;
 export default shoppingSlice.reducer;

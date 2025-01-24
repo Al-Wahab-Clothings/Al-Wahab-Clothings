@@ -1,44 +1,53 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
-import { Order, Product, StateProps } from "../type";
+import { Order, StateProps } from "../type";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import FormattedPrice from "./FormattedPrice";
-import { resetOrder, saveOrder } from "@/redux/shoppingSlice";
+import { resetOrder, setOrderData } from "@/redux/shoppingSlice";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { urlForImage } from "@/sanity/lib/image";
 import toast from "react-hot-toast";
 
-const OrderDetails = () => {
+const OrderDetails = ({ item }: any) => {
   const dispatch = useDispatch();
-  const { orderData }: any = useSelector((state: StateProps) => state.shopping);
+  const orderData = useSelector((state: StateProps) => state.shopping.orderData);
+  console.log('Redux Order Data:', orderData);
 
   const [totalAmount, setTotalAmount] = useState(0);
   const { userInfo }: any = useSelector(
     (state: StateProps) => state.shopping
   );
 
-  const fetchOrders = async () => {
-    try {
-      const res = await fetch(`/api/orders?user_id=${userInfo?.unique_id || "Anonymous"}`);
-      if (!res.ok) throw new Error("Failed to fetch orders.");
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`/api/orders?user_id=${userInfo ? userInfo.unique_id : "Anonymous"}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders data");
+        }
+        const data = await response.json();
 
-      const data = await res.json();
-      if (data?.allOrdersData) {
-        dispatch(saveOrder(data.allOrdersData)); // Ensure the API returns the correct structure
-      } else {
-        toast.error("No orders found.");
+        // Assuming that the API returns allOrdersData as an array of orders
+        const orders = data.allOrdersData;
+
+        // Dispatch the orders data to the store
+        dispatch(setOrderData(orders));
+
+      } catch (error) {
+        console.error("Error fetching orders:", error);
       }
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-      toast.error("Failed to fetch orders.");
-    }
-  };
+    };
 
-  const handleResetCart = async () => {
+    if (userInfo) {
+      fetchOrders();
+    }
+  }, [userInfo, dispatch]);
+
+  const handleResetOrder = async () => {
     try {
-      const res = await fetch("/api/postgres", {
+      const res = await fetch("/api/orders", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -51,72 +60,58 @@ const OrderDetails = () => {
       if (!res.ok) {
         const error = await res.json();
         console.error("Error response from server:", error);
-        throw new Error(error.message || "Failed to reset Order.");
+        throw new Error(error.message || "Failed to reset order.");
       }
 
       const result = await res.json();
-      console.log("Reset cart response:", result);
+      console.log("Reset Order response:", result);
 
       dispatch(resetOrder());
       toast.success("Order reset successfully!");
     } catch (error) {
-      console.error("Error resetting cart:", error);
+      console.error("Error resetting order:", error);
       toast.error(`An error occurred: ${(error as Error).message}`);
     }
   };
 
   useEffect(() => {
     let amt = 0;
-    orderData?.order?.forEach((item: Product) => {
-      amt += item.price * item.quantity;
+    orderData?.forEach((item: Order) => {
+      amt += item.unit_price * item.quantity;
     });
     setTotalAmount(amt);
-  }, [orderData.order]);
-
-  useEffect(() => {
-    if (userInfo?.unique_id) {
-      fetchOrders();
-    }
-  }, [userInfo]);
+  }, [orderData]);
 
   return (
     <div className="my-28">
-      {orderData?.orders?.length > 0 ? (
+      {orderData?.length > 0 ? (
         <div>
           <h2 className="font-bold text-5xl -mt-10 mb-4 font-logo text-darkText">Your Orders</h2>
           <div className="grid sm:grid-cols-6 grid-cols-4 uppercase text-sm font-medium py-2 border-b-[1px] bg-[#D6CFB4] p-2 border-b-gray-300">
             <p className="sm:col-span-3 justify-center">Items</p>
             <p className="hidden md:block text-center">Quantity</p>
             <p className="block md:hidden text-center">Qty.</p>
-            <p className="text-center">Per Unit</p>
-            <p className="text-center">Amount</p>
+            <p className="hidden md:block text-center">Amount</p>
+            <p className="block md:hidden text-center">Amt.</p>
+            <p className="hidden md:block text-center">Payment</p>
+            <p className="block md:hidden text-center">Pay.</p>
           </div>
           <div className="py-2 flex flex-col gap-2 mt-3">
-            {orderData?.order?.map((item: Order) => (
+            {orderData?.map((item: Order) => (
               <div
                 key={item?.orderId}
                 className="py-2 border-b-[1px] grid sm:grid-cols-6 grid-cols-4 items-center"
               >
                 <div className="sm:col-span-3 flex items-center gap-4">
-                  <Image
-                    src={urlForImage(item?.image).url()}
-                    alt="product image"
-                    width={500}
-                    height={500}
-                    className="w-12 h-12 object-cover"
-                  />
                   <div>
                     <h3 className="text-base font-semibold sm:block hidden">{item?.title}</h3>
                   </div>
                 </div>
                 <p className="text-center">{item?.quantity}</p>
                 <p className="text-center">
-                  <FormattedPrice amount={item?.price} />
+                  <FormattedPrice amount={item?.unit_price * item.quantity} />
                 </p>
-                <p className="text-center">
-                  <FormattedPrice amount={item?.price * item.quantity} />
-                </p>
-                <p className="text-center">{item?.status}</p>
+                <p className="text-center">{item?.payment}</p>
               </div>
             ))}
           </div>
@@ -124,13 +119,13 @@ const OrderDetails = () => {
             <p>Shipment: <span className="font-semibold">PKR 200</span></p>
           </div>
           <p className="py-2">
-            Total Paid:{" "}
+            Total Payment:{" "}
             <span className="text-xl font-semibold">
-              <FormattedPrice amount={totalAmount+200} />
+              <FormattedPrice amount={totalAmount + 200} />
             </span>
           </p>
           <Button
-            onClick={handleResetCart}
+            onClick={handleResetOrder}
             className="bg-red-700 text-white hover:bg-red-800 mt-5 px-4 py-1 rounded-md"
           >
             Reset Order
