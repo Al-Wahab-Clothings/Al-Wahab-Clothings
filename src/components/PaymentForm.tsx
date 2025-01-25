@@ -167,8 +167,7 @@ const PaymentForm = () => {
         : "No items found.";
 
       const customerEmailParams = {
-        to_email: userInfo?.email,
-        reply_to: userInfo?.email,
+        to_email: session?.user?.email,
         customer_name: session?.user?.name || "Customer",
         order_items: orderItems,
         total_price: totalAmt + 200,
