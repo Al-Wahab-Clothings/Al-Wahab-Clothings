@@ -20,6 +20,7 @@ const Footer = () => {
           <p className="hidden sm:block">
             Al Wahab Clothing is an online fashion store specializing in trendy and affordable apparel. The website offers a seamless shopping experience with its sleek design and easy navigation. It caters to diverse styles, ensuring quality and customer satisfaction.
           </p>
+          <p className="font-bold hover:scale-105">Deliver all over Pakistan! (Shipment charges Applicable)</p>
           <div className="flex items-center justify-center sm:justify-start gap-x-4">
             <Link href="https://wa.me/923242886759" target="_blank">
               <span className="socialLink">
