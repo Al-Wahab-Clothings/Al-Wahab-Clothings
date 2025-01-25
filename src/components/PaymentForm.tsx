@@ -2,7 +2,7 @@
 
 import emailjs from "@emailjs/browser";
 import { useDispatch, useSelector } from "react-redux";
-import { Product, StateProps } from "../type";
+import { Order, Product, StateProps } from "../type";
 import FormattedPrice from "./FormattedPrice";
 import { useEffect, useState } from "react";;
 import { useSession } from "next-auth/react";
@@ -13,6 +13,7 @@ import { FaArrowUp } from "react-icons/fa";
 
 const PaymentForm = () => {
   const { productData } = useSelector((state: StateProps) => state?.shopping);
+  const orderData = useSelector((state: StateProps) => state.shopping.orderData);
   const dispatch = useDispatch();
 
   const { userInfo }: any = useSelector(
@@ -20,13 +21,13 @@ const PaymentForm = () => {
   );
 
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ name: "", address: "", phone: "" });
-  const [formErrors, setFormErrors] = useState({ name: "", address: "", phone: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "", address: "" });
+  const [formErrors, setFormErrors] = useState({ name: "", phone: "", address: "" });
 
   const [totalAmt, setTotalAmt] = useState(0);
   useEffect(() => {
     let amt = 0;
-    productData.map((item: Product) => {
+    productData.map((item: Order) => {
       if (item.price) {
         amt += (item.price || 0) * (item.quantity || 0);
       }
@@ -44,19 +45,30 @@ const PaymentForm = () => {
       errors.name = "Name must contain only letters and spaces.";
     }
 
-    // Address validation: Must not be empty and not just a number
-    if (!formData.address || !isNaN(Number(formData.address))) {
-      errors.address = "Address must be a valid string.";
-    }
-
     // Phone validation: Must contain only digits and have at least 10 digits
     if (!formData.phone || !/^\d{10,}$/.test(formData.phone)) {
       errors.phone = "Phone number must be at least 10 digits long and contain only numbers.";
     }
 
+    // Address validation: Must not be empty and not just a number
+    if (!formData.address || !isNaN(Number(formData.address))) {
+      errors.address = "Address must be a valid string.";
+    }
+
     setFormErrors(errors);
-    return Object.keys(errors).length === 0; // returns true if no errors
+    return !Object.values(errors).some(error => error)
   };
+
+  useEffect(() => {
+    emailjs.init({
+      publicKey: process.env.EMAILJS_PUBLIC_KEY,
+      blockHeadless: true,
+      limitRate: {
+        id: 'app',
+        throttle: 10000,
+      },
+    });
+  }, []);
 
   const handleResetCart = async () => {
     try {
@@ -150,38 +162,40 @@ const PaymentForm = () => {
     }
   };
 
-  const handleSendEmail = async() => {
-    // Send email to the customer
-    const customerEmailParams = {
-      to_email: userInfo.email,  // Ensure you have the customer's email
-      customer_name: session?.user?.name || "Customer",
-      order_items: productData.map((item:any) => `${item.title} (x${item.quantity})`).join(", "),
-      total_price: totalAmt + 200,  // Total price (including shipping)
-    };
+  const handleSendEmail = async () => {
+    try {
+      const customerEmailParams = {
+        to_email: userInfo.email,
+        customer_name: session?.user?.name || "Customer",
+        order_items: orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", "),
+        total_price: totalAmt + 200,
+      };
 
-    await emailjs.send(
-      `${process.env.GMAIL_SERVICE_ID}`, // Your EmailJS service ID
-      `${process.env.GMAIL_TEMPLATE_ID}`, // Your EmailJS template ID for customer order
-      customerEmailParams,
-      'YOUR_USER_ID' // Your EmailJS user ID
-    );
+      await emailjs.send(
+        `${process.env.EMAILJS_SERVICE_ID}`,
+        `${process.env.EMAILJS_TEMPLATE_ID}`,
+        customerEmailParams
+      );
 
-    // Send email to the store (your email)
-    const storeEmailParams = {
-      to_email: 'your-email@example.com',  // Your store email
-      customer_name: session?.user?.name || "Customer",
-      order_items: productData.map((item:any) => `${item.title} (x${item.quantity})`).join(", "),
-      total_price: totalAmt + 200,
-      customer_email: userInfo.email,  // Customer's email
-    };
+      const storeEmailParams = {
+        to_email: 'alwahabclothing2@gmail.com',
+        customer_name: session?.user?.name || "Customer",
+        order_items: orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", "),
+        total_price: totalAmt + 200,
+        customer_email: userInfo.email,
+      };
 
-    await emailjs.send(
-      'YOUR_SERVICE_ID', // Your EmailJS service ID
-      'YOUR_TEMPLATE_ID', // Your EmailJS template ID for store notification
-      storeEmailParams,
-      'YOUR_USER_ID' // Your EmailJS user ID
-    );
-  }
+      await emailjs.send(
+        `${process.env.EMAILJS_SERVICE_ID}`,
+        `${process.env.EMAILJS_TEMPLATE_ID}`,
+        storeEmailParams
+      );
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error("An error occurred while sending the email.");
+    }
+  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -191,8 +205,8 @@ const PaymentForm = () => {
         await handleAddOrders(productData, userInfo, session, orderPayment);
         await handleResetCart();
 
-        // Redirect using window.location.href
-        window.location.href = `/success`;  // Redirects to the order page
+        // Redirects to the order page
+        window.location.href = `/success`;
 
         await handleSendEmail()
 
@@ -247,17 +261,6 @@ const PaymentForm = () => {
               {formErrors.name && <p className="text-red-500 text-xs">{formErrors.name}</p>}
             </div>
             <div className="mb-2">
-              <label className="block text-sm font-medium">Address</label>
-              <input
-                type="text"
-                value={formData.address}
-                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                required
-                className="w-full p-2 border border-gray-300 rounded"
-              />
-              {formErrors.address && <p className="text-red-500 text-xs">{formErrors.address}</p>}
-            </div>
-            <div className="mb-2">
               <label className="block text-sm font-medium">Phone</label>
               <input
                 type="text"
@@ -267,6 +270,17 @@ const PaymentForm = () => {
                 className="w-full p-2 border border-gray-300 rounded"
               />
               {formErrors.phone && <p className="text-red-500 text-xs">{formErrors.phone}</p>}
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium">Address</label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+              {formErrors.address && <p className="text-red-500 text-xs">{formErrors.address}</p>}
             </div>
             <div className="flex justify-between items-center">
               <Button type="submit" className="font-bold bg-darkText text-[#D6CFB4] mt-4 py-3 px-6">

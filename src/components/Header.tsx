@@ -61,11 +61,11 @@ const Header = () => {
             className="placeholder:text-sm flex-1 outline-none bg-[#D6CFB4] text-darkText"
           />
         </div>
-        <div className="justify-end flex gap-2 sm:gap-5 xl:gap-3">
+        <div className="justify-end flex gap-2 items-center sm:gap-5 xl:gap-3">
           {/* Cart button */}
           <div>
             <Link href={"/cart"}>
-              <div className="bg-[#D6CFB4] hover:bg-darkText rounded-full text-black hover:text-[#D6CFB4] flex items-center justify-center gap-x-1 px-3 py-1.5 border-[1px] border-darkText hover:border-[#D6CFB4] duration-200 relative mt-1">
+              <div className="bg-[#D6CFB4] hover:bg-darkText rounded-full text-black hover:text-[#D6CFB4] flex items-center justify-center gap-x-1 sm:px-3 sm:py-1.5 px-2 py-1 border-[1px] border-darkText hover:border-[#D6CFB4] duration-200 relative mt-1">
                 <p className="text-sm font-semibold hidden sm:block">
                   <FormattedPrice amount={totalAmt ? totalAmt : 0} />
                 </p>
@@ -87,8 +87,8 @@ const Header = () => {
           {orderData?.length > 0 && session && (
             <Link
               href={"/order"}
-              className="headerDiv px-2 gap-x-1 cursor-pointer bg-[#D6CFB4] text-darkText hover:bg-darkText hover:text-[#D6CFB4]">
-              <BsBookmarks className="text-xl" />
+              className="gap-x-1 cursor-pointer text-[#D6CFB4] hover:bg-darkText">
+              <BsBookmarks className="sm:text-3xl text-2xl ml-1" />
             </Link>
           )}
           {/* user Image */}
@@ -103,13 +103,13 @@ const Header = () => {
           )}
           {/* Logout button */}
           {session && (
-            <div className="relative mt-2">
+            <div className="relative">
               {/* Three Dots Button */}
               <div
                 onClick={() => setShowLogoutConfirmation(!showLogoutConfirmation)}
                 className="gap-x-1 cursor-pointer flex items-center justify-center"
               >
-                <BiDotsVerticalRounded className="text-2xl text-[#D6CFB4]" /> {/* Three Dots Icon */}
+                <BiDotsVerticalRounded className="text-2xl text-[#D6CFB4] -mr-2" /> {/* Three Dots Icon */}
               </div>
 
               {/* Logout Confirmation */}
