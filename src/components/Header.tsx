@@ -11,7 +11,7 @@ import FormattedPrice from "./FormattedPrice";
 import Link from "next/link";
 import { addUser, deleteUser } from "@/redux/shoppingSlice";
 import { BsBookmarks } from "react-icons/bs";
-import { Product, StateProps } from "@/type";
+import { Order, Product, StateProps } from "@/type";
 import Logo from "./Logo";
 import { BiDotsVerticalRounded } from "react-icons/bi"; // Import 3-dots icon
 
@@ -44,6 +44,12 @@ const Header = () => {
     });
     setTotalAmt(amt);
   }, [productData]);
+
+  useEffect(() => {
+    orderData.map((item: Order) => {
+      return;
+    });
+  }, [orderData]);
 
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 

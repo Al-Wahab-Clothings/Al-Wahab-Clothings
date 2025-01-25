@@ -2,18 +2,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Order, StateProps } from "../type";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import FormattedPrice from "./FormattedPrice";
 import { resetOrder, setOrderData } from "@/redux/shoppingSlice";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { urlForImage } from "@/sanity/lib/image";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const OrderDetails = ({ item }: any) => {
   const dispatch = useDispatch();
   const orderData = useSelector((state: StateProps) => state.shopping.orderData);
-  console.log('Redux Order Data:', orderData);
 
   const [totalAmount, setTotalAmount] = useState(0);
   const { userInfo }: any = useSelector(
@@ -68,6 +65,7 @@ const OrderDetails = ({ item }: any) => {
 
       dispatch(resetOrder());
       toast.success("Order reset successfully!");
+
     } catch (error) {
       console.error("Error resetting order:", error);
       toast.error(`An error occurred: ${(error as Error).message}`);
@@ -141,6 +139,7 @@ const OrderDetails = ({ item }: any) => {
           </Link>
         </div>
       )}
+      <Toaster />
     </div>
   );
 };

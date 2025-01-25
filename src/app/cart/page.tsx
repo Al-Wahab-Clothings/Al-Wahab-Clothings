@@ -8,7 +8,7 @@ import { resetCart } from "@/redux/shoppingSlice";
 import PaymentForm from "@/components/PaymentForm";
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { Product as IProduct } from "@/type";
 
 const CartPage = () => {
@@ -89,6 +89,7 @@ const CartPage = () => {
           </Link>
         </div>
       )}
+      <Toaster />
     </Container>
   );
 };

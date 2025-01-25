@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";;
 import { useSession } from "next-auth/react";
 import { resetCart, saveOrder } from "@/redux/shoppingSlice";
 import { Button } from "./ui/button";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { FaArrowUp } from "react-icons/fa";
 
 const PaymentForm = () => {
@@ -27,7 +27,7 @@ const PaymentForm = () => {
   const [totalAmt, setTotalAmt] = useState(0);
   useEffect(() => {
     let amt = 0;
-    productData.map((item: Order) => {
+    productData.map((item: Product) => {
       if (item.price) {
         amt += (item.price || 0) * (item.quantity || 0);
       }
@@ -60,14 +60,7 @@ const PaymentForm = () => {
   };
 
   useEffect(() => {
-    emailjs.init({
-      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
-      blockHeadless: true,
-      limitRate: {
-        id: 'app',
-        throttle: 10000,
-      },
-    });
+    emailjs.init(`${process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY}`);
   }, []);
 
   const handleResetCart = async () => {
@@ -164,11 +157,21 @@ const PaymentForm = () => {
 
   const handleSendEmail = async () => {
     try {
+
+      const orderItems = orderData?.length
+        ? orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", ")
+        : "No items found.";
+
       const customerEmailParams = {
-        to_email: userInfo.email,
+        to_email: userInfo?.email,
         customer_name: session?.user?.name || "Customer",
-        order_items: orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", "),
+        order_items: orderItems,
         total_price: totalAmt + 200,
+      };
+
+      const storeEmailParams = {
+        ...customerEmailParams,
+        to_email: "alwahabclothing2@gmail.com",
       };
 
       await emailjs.send(
@@ -177,19 +180,13 @@ const PaymentForm = () => {
         customerEmailParams
       );
 
-      const storeEmailParams = {
-        to_email: 'alwahabclothing2@gmail.com',
-        customer_name: session?.user?.name || "Customer",
-        order_items: orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", "),
-        total_price: totalAmt + 200,
-        customer_email: userInfo.email,
-      };
-
       await emailjs.send(
         `${process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID}`,
         `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID}`,
         storeEmailParams
       );
+
+      toast.success("Emails sent successfully!");
     } catch (error) {
       console.error("Error sending email:", error);
       toast.error("An error occurred while sending the email.");
@@ -205,10 +202,9 @@ const PaymentForm = () => {
         await handleAddOrders(productData, userInfo, session, orderPayment);
         await handleResetCart();
 
+        await handleSendEmail();
         // Redirects to the order page
         window.location.href = `/success`;
-
-        await handleSendEmail()
 
       } catch (error) {
         console.error("Error placing order:", error);
@@ -312,6 +308,7 @@ const PaymentForm = () => {
           </p>
         </div>
       )}
+      <Toaster />
     </div>
   );
 };

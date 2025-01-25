@@ -12,7 +12,7 @@ import {
 import FormattedPrice from "./FormattedPrice";
 import { Product as IProduct } from "@/type";
 import Link from "next/link";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { urlForImage } from "@/sanity/lib/image";
 
 const CartItem = ({ item }: any) => {
@@ -49,7 +49,7 @@ const CartItem = ({ item }: any) => {
             console.log("Reset cart response:", result);
 
             dispatch(deleteProduct(item?.id));
-            toast.success("Cart reset successfully!");
+            toast.success("Cart Item reset successfully!");
         } catch (error) {
             console.error("Error resetting cart:", error);
             toast.error(`An error occurred: ${(error as Error).message}`);
@@ -154,6 +154,7 @@ const CartItem = ({ item }: any) => {
                     </div>
                 </div>
             </div>
+            <Toaster />
         </div>
     );
 };
