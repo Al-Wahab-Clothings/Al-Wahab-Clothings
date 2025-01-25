@@ -38,7 +38,7 @@ const ProductsData = ({ lawn, cotton, khaddar, embroided, chickenKari, linen, be
 
     return (
       <div
-        className="-mt-1 text-darkText absolute left-2 top-1/6 z-10"
+        className=" text-darkText absolute left-2 top-1/6 z-10"
         onClick={handlePrevClick}
       >
         <IoIosArrowBack size={30}/>
@@ -59,7 +59,7 @@ const ProductsData = ({ lawn, cotton, khaddar, embroided, chickenKari, linen, be
 
     return (
       <div
-        className="-mt-7 text-darkText absolute right-2 top-1/6 z-10"
+        className="-mt-6 md:-mt-7 text-darkText absolute right-2 top-1/6 z-10"
         onClick={handleNextClick}
       >
         <IoIosArrowForward size={30}/>
