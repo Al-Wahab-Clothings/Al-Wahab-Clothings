@@ -158,8 +158,12 @@ const PaymentForm = () => {
   const handleSendEmail = async () => {
     try {
 
-      const orderItems = orderData?.length
-        ? orderData.map((item: any) => `${item.title} (x${item.quantity})`).join(", ")
+      // Check if productData is available for the current order
+      const orderItems = productData?.length
+        ? productData.map(
+          (item: Product) =>
+            `${item.title} (x${item.quantity})\n SKU: ${item.id || "N/A"}\n https://www.alwahabclothings.com/product/${item.id}\n\n`
+        ).join(", ")
         : "No items found.";
 
       const customerEmailParams = {

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
 import { IoMdCart } from "react-icons/io";
-import { FiSearch, FiLogOut } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import { AiOutlineUser } from "react-icons/ai";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import FormattedPrice from "./FormattedPrice";
 import Link from "next/link";
 import { addUser, deleteUser } from "@/redux/shoppingSlice";
 import { BsBookmarks } from "react-icons/bs";
-import { Order, Product, StateProps } from "@/type";
+import { Product, StateProps } from "@/type";
 import Logo from "./Logo";
 import { BiDotsVerticalRounded } from "react-icons/bi"; // Import 3-dots icon
 
@@ -46,9 +46,7 @@ const Header = () => {
   }, [productData]);
 
   useEffect(() => {
-    orderData.map((item: Order) => {
-      return;
-    });
+    // This useEffect ensures that any changes to orderData trigger a re-render
   }, [orderData]);
 
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
