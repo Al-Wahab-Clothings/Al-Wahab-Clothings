@@ -168,6 +168,7 @@ const PaymentForm = () => {
 
       const customerEmailParams = {
         to_email: userInfo?.email,
+        reply_to: userInfo?.email,
         customer_name: session?.user?.name || "Customer",
         order_items: orderItems,
         total_price: totalAmt + 200,
