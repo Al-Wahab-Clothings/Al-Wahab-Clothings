@@ -132,7 +132,7 @@ const PaymentForm = () => {
       console.log("Order Data Response:", orderData);
 
       if (!createOrderResponse.ok || !orderData.res) {
-        toast.error("Failed to create order");
+        // toast.error("Failed to create order");
         console.error("Error response from /api/orders:", orderData);
         return;
       }
@@ -171,18 +171,20 @@ const PaymentForm = () => {
 
       const storeEmailParams = {
         ...customerEmailParams,
+        customer_phone: formData.phone,
+        customer_address: formData.address,
         to_email: "alwahabclothing2@gmail.com",
       };
 
       await emailjs.send(
         `${process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID}`,
-        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_CUSTOMER}`,
         customerEmailParams
       );
 
       await emailjs.send(
         `${process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID}`,
-        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID_ADMIN}`,
         storeEmailParams
       );
 

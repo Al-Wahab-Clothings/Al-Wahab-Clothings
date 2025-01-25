@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Container from "./Container";
 import { motion } from "framer-motion";
+import { FaBox } from 'react-icons/fa';
 
 interface Props {
   title: string;
@@ -24,7 +25,7 @@ const BannerText = ({ title }: Props) => {
           transition={{ duration: 0.6 }}
           className="text-lg text-darkText"
         >
-          Stock up on sportswear and limited edition collections on our <br />
+          Stock up on Eid Wear and limited edition collections on our <br />
           awesome mid-season sale.
         </motion.p>
         <motion.div
@@ -34,12 +35,15 @@ const BannerText = ({ title }: Props) => {
           className="flex gap-x-4 mt-2"
         >
           <button className="py-3 px-6 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg">
-            Find out more
+            <Link href="https://wa.me/c/923242886759" target="blank" className="flex gap-2 items-center">
+              <FaBox size={15} />
+              Visit Cataloge
+            </Link>
           </button>
           <button
-          className="py-3 px-6 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg">
+            className="py-3 px-6 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg">
             <Link href="#products">
-            Shop Now
+              Shop Now
             </Link>
           </button>
         </motion.div>
