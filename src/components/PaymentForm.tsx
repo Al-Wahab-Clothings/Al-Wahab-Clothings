@@ -61,7 +61,7 @@ const PaymentForm = () => {
 
   useEffect(() => {
     emailjs.init({
-      publicKey: process.env.EMAILJS_PUBLIC_KEY,
+      publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
       blockHeadless: true,
       limitRate: {
         id: 'app',
@@ -172,8 +172,8 @@ const PaymentForm = () => {
       };
 
       await emailjs.send(
-        `${process.env.EMAILJS_SERVICE_ID}`,
-        `${process.env.EMAILJS_TEMPLATE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID}`,
         customerEmailParams
       );
 
@@ -186,8 +186,8 @@ const PaymentForm = () => {
       };
 
       await emailjs.send(
-        `${process.env.EMAILJS_SERVICE_ID}`,
-        `${process.env.EMAILJS_TEMPLATE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID}`,
+        `${process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID}`,
         storeEmailParams
       );
     } catch (error) {
