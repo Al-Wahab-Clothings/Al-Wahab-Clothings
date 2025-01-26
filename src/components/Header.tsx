@@ -80,6 +80,14 @@ const Header = () => {
               </div>
             </Link>
           </div>
+
+          {/* Order button */}
+          <Link
+            href={"/order"}
+            className="gap-x-1 cursor-pointer text-[#D6CFB4] hover:bg-darkText">
+            <BsBookmarks className="sm:text-3xl text-2xl ml-1" />
+          </Link>
+
           {/* Login/Register */}
           {!session && (
             <div onClick={() => signIn()} className="headerDiv ml-1 cursor-pointer bg-darkText text-[#D6CFB4] hover:text-darkText hover:bg-[#D6CFB4]">
@@ -87,14 +95,7 @@ const Header = () => {
               <p className="text-sm font-semibold md:block hidden">Login</p>
             </div>
           )}
-          {/* Order button */}
-          {orderData?.length > 0 && session && (
-            <Link
-              href={"/order"}
-              className="gap-x-1 cursor-pointer text-[#D6CFB4] hover:bg-darkText">
-              <BsBookmarks className="sm:text-3xl text-2xl ml-1" />
-            </Link>
-          )}
+
           {/* user Image */}
           {session && (
             <Image
