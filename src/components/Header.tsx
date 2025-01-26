@@ -46,7 +46,7 @@ const Header = () => {
   }, [productData]);
 
   useEffect(() => {
-    // This useEffect ensures that any changes to orderData trigger a re-render
+    console.log("Order Data Updated:", orderData); // Debugging
   }, [orderData]);
 
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);

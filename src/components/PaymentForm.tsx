@@ -181,6 +181,7 @@ const PaymentForm = () => {
 
       const storeEmailParams = {
         ...customerEmailParams,
+        customer_email: session?.user?.email,
         customer_phone: formData.phone,
         customer_address: formData.address,
         to_email: "alwahabclothing2@gmail.com",
