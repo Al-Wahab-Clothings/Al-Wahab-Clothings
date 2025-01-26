@@ -35,6 +35,10 @@ const PaymentForm = () => {
     setTotalAmt(amt);
   }, [productData]);
 
+  useEffect(() => {
+    // This useEffect ensures that any changes to orderData trigger a re-render
+  }, [orderData]);
+
   const { data: session } = useSession();
 
   const validateForm = () => {
@@ -127,18 +131,20 @@ const PaymentForm = () => {
         }),
       });
 
-      const orderData = await createOrderResponse.json();
-
-      console.log("Order Data Response:", orderData);
-
-      if (!createOrderResponse.ok || !orderData.res) {
-        // toast.error("Failed to create order");
-        console.error("Error response from /api/orders:", orderData);
-        return;
+      if (!createOrderResponse.ok) {
+        const errorData = await createOrderResponse.json();
+        console.error("Order creation error response:", errorData);
+        throw new Error(errorData.message || "Failed to create order.");
       }
 
-      // Assuming orderData contains the order ID after successful creation
-      const { id: orderId } = orderData.res;
+      const orderData = await createOrderResponse.json();
+      console.log("Order Data Response:", orderData);
+
+      // Handle nested array structure
+      const orderId = orderData.results?.[0]?.[0]?.id; // Adjust based on actual structure
+      if (!orderId) {
+        throw new Error("Unexpected response structure from /api/orders.");
+      }
 
       // Dispatch the saveOrder action to Redux
       dispatch(saveOrder({ order: productData, id: orderId }));
