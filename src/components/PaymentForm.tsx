@@ -2,11 +2,11 @@
 
 import emailjs from "@emailjs/browser";
 import { useDispatch, useSelector } from "react-redux";
-import { Order, Product, StateProps } from "../type";
+import { Product, StateProps } from "../type";
 import FormattedPrice from "./FormattedPrice";
 import { useEffect, useState } from "react";;
-import { useSession } from "next-auth/react";
-import { resetCart, saveOrder } from "@/redux/shoppingSlice";
+import { useSession, signIn } from "next-auth/react";
+import { addUser, deleteUser, resetCart, saveOrder } from "@/redux/shoppingSlice";
 import { Button } from "./ui/button";
 import toast, { Toaster } from "react-hot-toast";
 import { FaArrowUp } from "react-icons/fa";
@@ -15,6 +15,7 @@ const PaymentForm = () => {
   const { productData } = useSelector((state: StateProps) => state?.shopping);
   const orderData = useSelector((state: StateProps) => state.shopping.orderData);
   const dispatch = useDispatch();
+  const { data: session } = useSession();
 
   const { userInfo }: any = useSelector(
     (state: StateProps) => state.shopping
@@ -23,6 +24,16 @@ const PaymentForm = () => {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", address: "" });
   const [formErrors, setFormErrors] = useState({ name: "", phone: "", address: "" });
+
+  useEffect(() => {
+    if (session) {
+      dispatch(
+        addUser(session?.user)
+      );
+    } else {
+      dispatch(deleteUser());
+    }
+  }, [session, dispatch]);
 
   const [totalAmt, setTotalAmt] = useState(0);
   useEffect(() => {
@@ -38,8 +49,6 @@ const PaymentForm = () => {
   useEffect(() => {
     // This useEffect ensures that any changes to orderData trigger a re-render
   }, [orderData]);
-
-  const { data: session } = useSession();
 
   const validateForm = () => {
     const errors: any = {};
@@ -206,25 +215,34 @@ const PaymentForm = () => {
     }
   };
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      const orderPayment = "COD";
-      try {
-        await handleAddOrders(productData, userInfo, session, orderPayment);
-        await handleResetCart();
 
-        await handleSendEmail();
-        // Redirects to the order page
-        window.location.href = `/success`;
+    // Show confirmation popup
+    const isConfirmed = window.confirm("Are you sure you want to place this order?");
 
-      } catch (error) {
-        console.error("Error placing order:", error);
-        toast.error("An error occurred while placing your order.");
+    if (isConfirmed) {
+      if (validateForm()) {
+        const orderPayment = "COD";
+        try {
+          await handleAddOrders(productData, userInfo, session, orderPayment);
+          await handleResetCart();
+
+          await handleSendEmail();
+          // Redirects to the order page
+          window.location.href = `/success`;
+
+        } catch (error) {
+          console.error("Error placing order:", error);
+          toast.error("An error occurred while placing your order.");
+        }
+      } else {
+        toast.error("Please fix the errors in the form.");
       }
     } else {
-      toast.error("Please fix the errors in the form.");
+      setShowForm(false)
+      // If the user clicks "No", you can handle the cancellation here (optional)
+      console.log("Order submission cancelled.");
     }
   };
 
@@ -313,7 +331,9 @@ const PaymentForm = () => {
         )
       ) : (
         <div>
-          <Button variant="destructive" className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold">
+          <Button
+            onClick={() => signIn()}
+            variant="destructive" className="bg-darkText text-slate-100 mt-4 py-3 px-6 hover:bg-red-700 cursor-not-allowed duration-200 font-bold">
             Proceed to checkout
           </Button>
           <p className="text-base mt-1 text-red-500 font-semibold animate-bounce">

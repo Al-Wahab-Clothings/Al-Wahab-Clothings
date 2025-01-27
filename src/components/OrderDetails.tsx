@@ -43,34 +43,43 @@ const OrderDetails = ({ item }: any) => {
   }, [userInfo, dispatch]);
 
   const handleResetOrder = async () => {
-    try {
-      const res = await fetch("/api/orders", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: userInfo ? userInfo.unique_id : "Anonymous",
-        }),
-      });
+    // Show confirmation popup before resetting the order
+    const isConfirmed = window.confirm("Are you sure you want to reset the order?");
 
-      if (!res.ok) {
-        const error = await res.json();
-        console.error("Error response from server:", error);
-        throw new Error(error.message || "Failed to reset order.");
+    if (isConfirmed) {
+      try {
+        const res = await fetch("/api/orders", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: userInfo ? userInfo.unique_id : "Anonymous",
+          }),
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          console.error("Error response from server:", error);
+          throw new Error(error.message || "Failed to reset order.");
+        }
+
+        const result = await res.json();
+        console.log("Reset Order response:", result);
+
+        dispatch(resetOrder());
+        toast.success("Order reset successfully!");
+
+      } catch (error) {
+        console.error("Error resetting order:", error);
+        toast.error(`An error occurred: ${(error as Error).message}`);
       }
-
-      const result = await res.json();
-      console.log("Reset Order response:", result);
-
-      dispatch(resetOrder());
-      toast.success("Order reset successfully!");
-
-    } catch (error) {
-      console.error("Error resetting order:", error);
-      toast.error(`An error occurred: ${(error as Error).message}`);
+    } else {
+      // If the user clicks "No", do nothing (optional)
+      console.log("Order reset cancelled.");
     }
   };
+
 
   useEffect(() => {
     let amt = 0;
