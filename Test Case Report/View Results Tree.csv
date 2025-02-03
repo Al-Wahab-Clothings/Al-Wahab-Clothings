@@ -1,0 +1,6 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1738565820170,909,HTTP Request,200,OK,Thread Group 1-1,text,true,,96654,126,1,1,https://www.alwahabclothings.com/,877,0,818
+1738565848270,208,HTTP Request,200,OK,Thread Group 1-1,text,true,,11251,130,1,1,https://www.alwahabclothings.com/cart,207,0,132
+1738565900287,199,HTTP Request,200,OK,Thread Group 1-1,text,true,,10900,131,1,1,https://www.alwahabclothings.com/order,199,0,128
+1738565918715,720,HTTP Request,200,OK,Thread Group 1-1,text,true,,10562,133,1,1,https://www.alwahabclothings.com/success,720,0,120
+1738566008063,504,HTTP Request,200,OK,Thread Group 1-1,text,true,,17023,142,1,1,https://www.alwahabclothings.com/product/k-avory6,470,0,122
