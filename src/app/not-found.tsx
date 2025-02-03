@@ -13,6 +13,7 @@ const NotFoundPage = () => {
         </p>
         <Link
           href={"/"}
+          aria-label="Back to Home page"
           className="bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full text-base font-semibold flex items-center justify-center hover:bg-[#D6CFB4] hover:text-darkText duration-200"
         >
           Back to Home

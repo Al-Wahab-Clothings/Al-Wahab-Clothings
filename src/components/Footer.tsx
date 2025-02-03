@@ -22,17 +22,17 @@ const Footer = () => {
           </p>
           <p className="font-bold hover:scale-105">Deliver all over Pakistan! (Shipment charges Applicable)</p>
           <div className="flex items-center justify-center sm:justify-start gap-x-4">
-            <Link href="https://wa.me/923242886759" target="_blank">
+            <Link href="https://wa.me/923242886759" target="_blank" aria-label="Contact us on Whatsapp">
               <span className="socialLink">
                 <BsWhatsapp />
               </span>
             </Link>
-            <Link href="https://www.facebook.com/profile.php?id=61571705360963&mibextid=ZbWKwL" target="_blank">
+            <Link href="https://www.facebook.com/profile.php?id=61571705360963&mibextid=ZbWKwL" target="_blank" aria-label="Visit Facebook">
               <span className="socialLink">
                 <BsFacebook />
               </span>
             </Link>
-            <Link href="https://www.instagram.com/wahab_clothings/" target="_blank">
+            <Link href="https://www.instagram.com/wahab_clothings/" target="_blank" aria-label="Visit Instagram">
               <span className="socialLink">
                 <BsInstagram />
               </span>
@@ -49,7 +49,7 @@ const Footer = () => {
               height={30}
               className="cursor-pointer hover:animate-slowspin"
             />
-            <Link href="https://ridanaz-portfolio.vercel.app/">
+            <Link href="https://ridanaz-portfolio.vercel.app/" aria-label="Visit the Developer Portfolio">
               <h3 className="text-2xl font-logo hover:scale-110">Rida Naz</h3>
             </Link>
           </div>
@@ -60,6 +60,7 @@ const Footer = () => {
             <Link
               href="https://wa.me/923136488867"
               target="_blank"
+              aria-label="Contact the Developer on Whatsapp"
               className="flex items-center gap-3 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
             >
               <BsWhatsapp />
@@ -70,6 +71,7 @@ const Footer = () => {
               href="https://ridanaz-portfolio.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="Visit the Developer Portfolio"
               className="flex items-center gap-3 text-lg font-semibold hover:text-[#F9F7F1] transition-colors"
             >
               <FaGlobe />

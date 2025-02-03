@@ -3,7 +3,7 @@ import React from "react";
 
 const Logo = () => {
   return (
-    <Link href={"/"}>
+    <Link href={"/"} aria-label="Back to Home Page">
       <h3 className="font-logo text-3xl text-[#D6CFB4] hover:text-orange-600 cursor-pointer duration-200">
         Al Wahab
       </h3>

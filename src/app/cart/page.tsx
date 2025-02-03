@@ -82,7 +82,7 @@ const CartPage = () => {
           <p className="font-semibold w-full text-center text-xl">
             Your product cart is currently empty!
           </p>
-          <Link href={"/"}>
+          <Link href={"/"} aria-label="Return to Shop">
             <button className="bg-darkText font-bold text-white hover:text-darkText py-2 px-6 rounded-md hover:bg-[#D6CFB4] duration-200">
               Return to Shop
             </button>

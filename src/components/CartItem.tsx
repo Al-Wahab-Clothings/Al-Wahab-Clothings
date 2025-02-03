@@ -110,7 +110,8 @@ const CartItem = ({ item }: any) => {
                         >
                             <AiOutlineClose />
                         </span>
-                        <Link href={{ pathname: `https://www.alwahabclothings.com/product/${item?.id}` }}>
+                        <Link href={{ pathname: `https://www.alwahabclothings.com/product/${item?.id}` }}
+                        aria-label="View Single Product">
                             <Image
                                 src={urlForImage(item?.image).url()}
                                 width={500}

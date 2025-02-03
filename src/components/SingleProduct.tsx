@@ -90,7 +90,7 @@ const SingleProduct = ({ product }: any) => {
               <IoMdCart />
             </span>
           </div>
-          <Link href={whatsappLink} target="_blank" rel="noopener noreferrer">
+          <Link href={whatsappLink} aria-label="Chat with us on WhatsApp" target="_blank" rel="noopener noreferrer">
             <div
               className="flex sm:flex-row-reverse items-center cursor-pointer group mt-2 sm:mt-0 mr-4 md:mr-1 lg:mr-6"
             >

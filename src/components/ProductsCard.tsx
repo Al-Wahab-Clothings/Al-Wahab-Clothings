@@ -90,7 +90,7 @@ const ProductsCard = ({ item }: ItemProps) => {
     return (
         <div className="w-full rounded-lg overflow-hidden">
             <div>
-                <Link href={{ pathname: `/product/${item?.id}` }}>
+                <Link href={{ pathname: `/product/${item?.id}` }} aria-label="View Single Product">
                     <div className="w-full h-72 group overflow-hidden relative">
                         {item.image && (
                             <Image
@@ -106,7 +106,7 @@ const ProductsCard = ({ item }: ItemProps) => {
                             </span>
                         )}
                         {/* WhatsApp Icon */}
-                        <Link href={whatsappLink} target="_blank" rel="noopener noreferrer"
+                        <Link href={whatsappLink} aria-label="Chat with us on WhatsApp" target="_blank" rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()} >
                             <div className="absolute top-2 right-2 bg-[#168a40] p-2 rounded-full flex justify-center items-center hover:shadow-lg z-20 hover:scale-110">
                                 <BsWhatsapp size={22} color="white" />
@@ -138,7 +138,7 @@ const ProductsCard = ({ item }: ItemProps) => {
                             Add to cart
                         </button>
                         {/* star icons */}
-                        <div className="flex items-center gap-x-1">{startArray}</div>
+                        <div className="flex items-center gap-x-1" aria-hidden="true">{startArray}</div>
                     </div>
                 </div>
             </div>

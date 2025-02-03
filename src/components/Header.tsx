@@ -68,7 +68,7 @@ const Header = () => {
         <div className="justify-end flex gap-2 items-center sm:gap-5 xl:gap-3">
           {/* Cart button */}
           <div>
-            <Link href={"/cart"}>
+            <Link href={"/cart"} aria-label="View Cart">
               <div className="bg-[#D6CFB4] hover:bg-darkText rounded-full text-black hover:text-[#D6CFB4] flex items-center justify-center gap-x-1 sm:px-3 sm:py-1.5 px-2 py-1 border-[1px] border-darkText hover:border-[#D6CFB4] duration-200 relative mt-1">
                 <p className="text-sm font-semibold hidden sm:block">
                   <FormattedPrice amount={totalAmt ? totalAmt : 0} />
@@ -84,6 +84,7 @@ const Header = () => {
           {/* Order button */}
           <Link
             href={"/order"}
+            aria-label="View Orders"
             className="gap-x-1 cursor-pointer text-[#D6CFB4] hover:bg-darkText">
             <BsBookmarks className="sm:text-3xl text-2xl ml-1" />
           </Link>
@@ -113,8 +114,10 @@ const Header = () => {
               <div
                 onClick={() => setShowLogoutConfirmation(!showLogoutConfirmation)}
                 className="gap-x-1 cursor-pointer flex items-center justify-center"
+                aria-hidden="true"
               >
-                <BiDotsVerticalRounded className="text-2xl text-[#D6CFB4] -mr-2" /> {/* Three Dots Icon */}
+                <BiDotsVerticalRounded className="text-2xl text-[#D6CFB4] -mr-2" aria-label="Open Menu"/>
+                {/* Three Dots Icon */}
               </div>
 
               {/* Logout Confirmation */}

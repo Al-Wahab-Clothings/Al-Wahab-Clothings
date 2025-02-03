@@ -25,12 +25,12 @@ const SuccessPage = () => {
                 </p>
                 <p className="font-medium">Now you can view your Orders or continue Shopping with us</p>
                 <div className="grid md:grid-cols-2 items-center gap-4">
-                    <Link href={"/order"}>
+                    <Link href={"/order"} aria-label="View Orders">
                         <button className="bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full text-base font-semibold hover:bg-[#D6CFB4] duration-300 hover:text-darkText">
                             View Orders
                         </button>
                     </Link>
-                    <Link href={"/"}>
+                    <Link href={"/"} aria-label="Continue Shopping">
                         <button className="bg-darkText text-[#D6CFB4] w-44 h-12 rounded-full text-base font-semibold hover:bg-[#D6CFB4] duration-300 hover:text-darkText">
                             Continue Shopping
                         </button>
