@@ -34,14 +34,14 @@ const BannerText = ({ title }: Props) => {
           transition={{ duration: 0.7 }}
           className="flex gap-x-4 mt-2"
         >
-          <button className="py-4 px-8 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg flex gap-2 items-center justify-center">
+          <button className="py-3 px-6 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg flex gap-2 items-center justify-center">
             <Link href="https://wa.me/c/923242886759" target="blank" className="flex gap-2 items-center" aria-label="View Catalogs" >
               <FaBox size={15} />
               Visit Cataloge
             </Link>
           </button>
           <button
-            className="py-4 px-8 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg flex gap-2 items-center justify-center" >
+            className="py-3 px-6 rounded-full text-[#D6CFB4] hover:text-darkText bg-darkText hover:bg-[#D6CFB4] duration-200 text-sm uppercase font-semibold hover:shadow-lg flex gap-2 items-center justify-center" >
             <Link href="#products" aria-label="Shop Now">
               Shop Now
             </Link>

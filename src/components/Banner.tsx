@@ -48,6 +48,8 @@ const Banner = () => {
             src={bannerone}
             alt="bannerone"
             className="w-full h-full relative"
+            loading="lazy" // Defers offscreen image loading
+            decoding="async"
             priority
           />
           <BannerText title="Outware Picks" />
@@ -57,6 +59,9 @@ const Banner = () => {
             src={bannertwo}
             alt="bannertwo"
             className="w-full h-full relative"
+            loading="lazy" // Defers offscreen image loading
+            decoding="async"
+            priority={false} // Removes high load priority
           />
           <BannerText title="Seasonal Offers" />
         </div>
@@ -65,6 +70,9 @@ const Banner = () => {
             src={bannerthree}
             alt="bannerthree"
             className="w-full h-full relative"
+            loading="lazy" // Defers offscreen image loading
+            decoding="async"
+            priority={false} // Removes high load priority
           />
           <BannerText title="Best for men" />
         </div>
