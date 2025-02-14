@@ -68,7 +68,7 @@ const Footer = () => {
             </Link>
             <span className="hidden sm:block">|</span>
             <Link
-              href="https://ridanaz-portfolio.vercel.app/"
+              href="https://ridanaz.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Visit the Developer Portfolio"
